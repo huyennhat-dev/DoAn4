@@ -62,6 +62,7 @@ class _AppHeaderState extends State<AppHeader> {
       ),
     );
   }
+  
 
   Widget _buildHeaderLeft(BuildContext context) => Row(
         children: [
