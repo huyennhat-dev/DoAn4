@@ -48,7 +48,7 @@ class _RecentReviewState extends State<RecentReview> {
               icon: Icon(CupertinoIcons.burst, color: Colors.white, size: 20)),
           Container(
             width: size.width - kDefautPadding,
-            height: 220,
+            height: 245,
             child: ScrollConfiguration(
               behavior: MyBehavior(),
               child: ListView.builder(
@@ -102,7 +102,7 @@ class _RecentReviewState extends State<RecentReview> {
                       'Trần Ngọc Hân Nhi',
                       style: GoogleFonts.mulish(
                           color: textColor,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal),
                       overflow: TextOverflow.ellipsis,
@@ -116,7 +116,7 @@ class _RecentReviewState extends State<RecentReview> {
                       '24 ngày trước',
                       style: GoogleFonts.mulish(
                           color: textColor,
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic),
                       overflow: TextOverflow.ellipsis,
@@ -131,7 +131,7 @@ class _RecentReviewState extends State<RecentReview> {
                   'Đánh giá',
                   style: GoogleFonts.mulish(
                       color: kSecondaryColor,
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.w400),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,

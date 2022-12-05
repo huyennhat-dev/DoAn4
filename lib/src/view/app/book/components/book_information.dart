@@ -267,7 +267,7 @@ class _BookInfomationState extends State<BookInfomation> {
           GestureDetector(
             onTap: () => onShowDesc(),
             child: Container(
-              width: 130,
+              width: 140,
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(
                   vertical: kDefautPadding / 4, horizontal: kDefautPadding / 1),

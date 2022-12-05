@@ -50,7 +50,7 @@ class _NewBookUpdateState extends State<NewBookUpdate> {
                   color: Colors.white, size: 20)),
           Container(
             width: size.width - kDefautPadding,
-            height: 202,
+            height: 210,
             child: ScrollConfiguration(
               behavior: MyBehavior(),
               child: ListView.builder(

@@ -1,4 +1,5 @@
-package com.example.client
+package com.novels.canabook
+
 
 import io.flutter.embedding.android.FlutterActivity
 

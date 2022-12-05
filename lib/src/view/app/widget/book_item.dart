@@ -15,7 +15,7 @@ class BookItem extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        height: ((390 - 40) / 5) * 4 / 3 + 20,
+        height: ((390 - 40) / 5) * 4 / 3 + 30,
         padding: const EdgeInsets.symmetric(
             horizontal: kDefautPadding / 2, vertical: kDefautPadding / 2),
         margin: const EdgeInsets.only(
@@ -27,7 +27,7 @@ class BookItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(7),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildItemImage(size,
                 'https://st.ntcdntempv3.com/data/comics/35/arrive-the-flower-of-hope-will-bloom-one-2458.jpg'),
@@ -47,14 +47,14 @@ class BookItem extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: image,
             placeholder: (BuildContext context, String url) => Container(
-              height: ((size.width - 40) / 5) * 4 / 3,
-              width: (size.width - 40) / 5,
+              width: (390 - 40) / 5,
+              height: ((390 - 40) / 5) * 4 / 3,
               color: kQuaternaryColor,
             ),
             fit: BoxFit.cover,
             errorWidget: (context, url, error) => Container(
-                height: ((size.width - 40) / 5) * 4 / 3,
-                width: (size.width - 40) / 5,
+                width: (390 - 40) / 5,
+                height: ((390 - 40) / 5) * 4 / 3,
                 color: kQuaternaryColor),
           ),
         ),
@@ -62,7 +62,7 @@ class BookItem extends StatelessWidget {
 
   Widget _buildItemRight(Size size) => Container(
         width: (size.width - 40) / 5 * 4 - 10,
-        height: ((390 - 40) / 5) * 4 / 3,
+        height: ((390 - 40) / 5) * 4 / 3 + 20,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

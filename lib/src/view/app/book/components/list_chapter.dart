@@ -7,12 +7,19 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../chapter/chapter.dart';
 
-class ListChapter extends StatelessWidget {
+class ListChapter extends StatefulWidget {
   const ListChapter(
       {super.key, required this.chapters, required this.truyenid});
 
   final List<Danhsachchuong> chapters;
   final int truyenid;
+
+  @override
+  State<ListChapter> createState() => _ListChapterState();
+}
+
+class _ListChapterState extends State<ListChapter> {
+  bool reversed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,7 @@ class ListChapter extends StatelessWidget {
               onPressed: () {},
               status: true,
               icon: Icon(CupertinoIcons.book, color: Colors.white, size: 20)),
-          _buildListChapter(context, chapters, size)
+          _buildListChapter(context, widget.chapters, size)
         ],
       ),
     );
@@ -59,9 +66,10 @@ class ListChapter extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           fontSize: 14)),
                   GestureDetector(
-                      onTap: () {},
+                      onTap: () => setState(() => reversed = !reversed),
                       child: Icon(Icons.sort_sharp,
-                          color: Colors.white30, size: 24))
+                          color: reversed ? Colors.white : Colors.white30,
+                          size: 24))
                 ],
               ),
             ),
@@ -75,13 +83,19 @@ class ListChapter extends StatelessWidget {
                 maxHeight: 35 * 10 + 5 * 11,
                 minHeight: 0,
               ),
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  const SizedBox(height: 5),
-                  for (int i = 0; i <= chapters.length - 1; i++)
-                    _buildChapterItem(context, i, size),
-                ],
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                removeBottom: true,
+                child: ListView(
+                  reverse: reversed,
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    const SizedBox(height: 5),
+                    for (int i = 0; i <= chapters.length - 1; i++)
+                      _buildChapterItem(context, i, size),
+                  ],
+                ),
               ),
             ),
           ],
@@ -94,8 +108,9 @@ class ListChapter extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => BookChapter(
-                    truyen_id: truyenid,
-                    slugChuong: int.parse(chapters[index].slug.toString())))),
+                    truyen_id: widget.truyenid,
+                    slugChuong:
+                        int.parse(widget.chapters[index].slug.toString())))),
         child: Container(
           height: 35,
           margin: const EdgeInsets.only(bottom: kDefautPadding / 4),
@@ -109,7 +124,7 @@ class ListChapter extends StatelessWidget {
               SizedBox(
                 width: size.width - kDefautPadding * 2 - 50,
                 child: Text(
-                  'Chương ${index + 1}: ${chapters[index].tenchuong}',
+                  'Chương ${index + 1}: ${widget.chapters[index].tenchuong}',
                   style: GoogleFonts.mulish(
                       color: textColor,
                       fontWeight: FontWeight.w400,
