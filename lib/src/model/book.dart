@@ -1,3 +1,5 @@
+import 'decu.dart';
+
 class Book {
   int? id;
   String? tentruyen;
@@ -17,6 +19,7 @@ class Book {
   String? thegioi;
   String? luuphai;
   List<Danhsachchuong>? danhsachchuong;
+  List<Topdecu>? topdecu;
 
   Book(
       {this.id,
@@ -36,7 +39,8 @@ class Book {
       this.tinhcach,
       this.thegioi,
       this.luuphai,
-      this.danhsachchuong});
+      this.danhsachchuong,
+      this.topdecu});
 
   Book.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -60,6 +64,12 @@ class Book {
       danhsachchuong = <Danhsachchuong>[];
       json['danhsachchuong'].forEach((v) {
         danhsachchuong!.add(new Danhsachchuong.fromJson(v));
+      });
+    }
+    if (json['topdecu'] != null) {
+      topdecu = <Topdecu>[];
+      json['topdecu'].forEach((v) {
+        topdecu!.add(new Topdecu.fromJson(v));
       });
     }
   }
@@ -86,6 +96,9 @@ class Book {
     if (this.danhsachchuong != null) {
       data['danhsachchuong'] =
           this.danhsachchuong!.map((v) => v.toJson()).toList();
+    }
+    if (this.topdecu != null) {
+      data['topdecu'] = this.topdecu!.map((v) => v.toJson()).toList();
     }
     return data;
   }

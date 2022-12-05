@@ -9,7 +9,7 @@ import '../../../services/service.dart';
 import '../../contains.dart';
 import 'components/book_information.dart';
 import 'components/header.dart';
-import '../widget/list_chapter.dart';
+import 'components/list_chapter.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -137,7 +137,9 @@ class _BookPageState extends State<BookPage> {
                                   truyenid: snapshot.data!.id!.toInt(),
                                   chapters: snapshot.data!.danhsachchuong!,
                                 ),
-                                Nominations()
+                                Nominations(
+                                  decus: snapshot.data!.topdecu!,
+                                )
                               ],
                             ),
                           ]);

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../chapter/chapter.dart';
+import '../../chapter/chapter.dart';
 
 class ListChapter extends StatelessWidget {
   const ListChapter(
