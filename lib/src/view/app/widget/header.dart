@@ -1,13 +1,20 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../services/google_sign_in.dart';
 import '../../../services/service.dart';
 import '../../../view/app/search/search.dart';
 import '../../../view/app/utils/button.dart';
 import '../../../view/contains.dart';
+
+final String base_Url = Service.base_Url;
 
 class AppHeader extends StatefulWidget {
   const AppHeader({super.key});
@@ -48,6 +55,30 @@ class _AppHeaderState extends State<AppHeader> {
     );
   }
 
+  Future signIn() async {
+    final user = await GoogleSignInApi.login();
+
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Faild"),
+        ),
+      );
+    } else {
+      print(user.photoUrl);
+    }
+  }
+
+  Future<http.Response> googleSignIn(data) {
+    return http.post(
+      Uri.parse('$base_Url/tcv/public/api/v1/google_sign_in'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(data),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,7 +93,6 @@ class _AppHeaderState extends State<AppHeader> {
       ),
     );
   }
-  
 
   Widget _buildHeaderLeft(BuildContext context) => Row(
         children: [
@@ -178,7 +208,7 @@ class _AppHeaderState extends State<AppHeader> {
                     ]),
                 const SizedBox(height: 40),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: signIn,
                   child: Container(
                     margin: const EdgeInsets.symmetric(
                         horizontal: kDefautPadding / 2),
