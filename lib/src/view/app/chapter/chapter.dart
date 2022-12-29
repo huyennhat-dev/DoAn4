@@ -1,10 +1,6 @@
-import 'dart:convert';
-
-import 'package:client/src/controller/book.dart';
-import 'package:client/src/view/app/widget/loading.dart';
+import 'package:client/src/controller/chapter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/service.dart';
 import '../../contains.dart';
@@ -25,14 +21,20 @@ class BookChapter extends StatefulWidget {
 }
 
 class _BookChapterState extends State<BookChapter> {
-  BookController bookController = Get.put(BookController());
+  ChapterController chapterController = Get.put(ChapterController());
   late PageController controller;
 
   @override
   void initState() {
-    super.initState();
-    bookController.loadAllChapter(widget.truyen_id);
+    chapterController.loadAllChapter(widget.truyen_id);
     controller = PageController(initialPage: widget.slugChuong - 1);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    Get.delete<ChapterController>();
+    super.dispose();
   }
 
   @override
@@ -49,17 +51,17 @@ class _BookChapterState extends State<BookChapter> {
         child: ScrollConfiguration(
             behavior: MyBehavior(),
             child: Obx(
-              () => bookController.isLoading.value
+              () => chapterController.isLoading.value
                   ? Container(height: 50)
                   : PageView.builder(
                       controller: controller,
-                      itemCount: bookController.chapters!.length,
+                      itemCount: chapterController.chapters!.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) => Column(
                             children: [
                               BookChapterHeader(
                                 chapterName: "Chương ${index + 1}: " +
-                                    bookController.chapters![index].tenchuong
+                                    chapterController.chapters![index].tenchuong
                                         .toString(),
                                 onPressed: () => showModalBottomSheet(
                                   context: context,
@@ -70,7 +72,8 @@ class _BookChapterState extends State<BookChapter> {
                                   flex: 1,
                                   child: BookChapterContent(
                                     truyenId: widget.truyen_id.toString(),
-                                    slug: bookController.chapters![index].slug
+                                    slug: chapterController
+                                        .chapters![index].slug
                                         .toString(),
                                   ))
                             ],

@@ -1,4 +1,4 @@
-class BannerModel {
+class HomeBook {
   int? id;
   String? tentruyen;
   String? hinhanh;
@@ -7,7 +7,7 @@ class BannerModel {
   String? tacgia;
   int? chuongmoinhat;
 
-  BannerModel(
+  HomeBook(
       {this.id,
       this.tentruyen,
       this.hinhanh,
@@ -16,7 +16,7 @@ class BannerModel {
       this.tacgia,
       this.chuongmoinhat});
 
-  BannerModel.fromJson(Map<String, dynamic> json) {
+  HomeBook.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     tentruyen = json['tentruyen'];
     hinhanh = json['hinhanh'];

@@ -1,10 +1,8 @@
-import 'package:client/src/controller/book.dart';
 import 'package:client/src/model/chapter.dart';
-import 'package:client/src/repo/book.dart';
+import 'package:client/src/repo/chapter.dart';
 import 'package:client/src/view/app/widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:get/get.dart';
 
 import '../../../../helpers/shared_pref.dart';
 import '../../../contains.dart';
@@ -22,12 +20,13 @@ class BookChapterContent extends StatefulWidget {
 
 class _BookChapterContentState extends State<BookChapterContent> {
   late Future<Chapter> futureChapter;
-  String cusId = "0";
+  String? cusId;
 
   Future<Chapter> loadChapter() async {
-    cusId = (await SharedPref().read('UID'))!;
+    String uid = (await SharedPref().read('UID'))!;
+    uid != null ? cusId = uid : cusId = '0';
     final body =
-        await BookRepo.fetchChapter(cusId, widget.truyenId, widget.slug);
+        await ChapterRepo.fetchChapter(cusId, widget.truyenId, widget.slug);
     return Chapter.fromJson(body);
   }
 

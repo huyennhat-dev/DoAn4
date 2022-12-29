@@ -1,36 +1,19 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:client/src/services/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:http/http.dart' as http;
-
-import '../../../../model/banner.dart';
 import '../../../contains.dart';
 import '../../book/book.dart';
 import '../../chapter/chapter.dart';
 import '../../utils/button.dart';
 
-final String base_Url = Service.base_Url;
-Future<List<BannerModel>> fetchNominations() async {
-  final response =
-      await http.get(Uri.parse('$base_Url/tcv/public/api/v2/banner'));
-  if (response.statusCode == 200) {
-    List jsonResponse = json.decode(response.body);
-    return jsonResponse.map((data) => BannerModel.fromJson(data)).toList();
-  } else {
-    throw Exception('Có lỗi rồi!');
-  }
-}
-
 class AppBanner extends StatefulWidget {
-  const AppBanner({super.key});
-
+  const AppBanner({super.key, required this.data});
+  final List<dynamic> data;
   @override
   State<AppBanner> createState() => _AppBannerState();
 }
@@ -38,50 +21,26 @@ class AppBanner extends StatefulWidget {
 class _AppBannerState extends State<AppBanner> {
   int activateIndex = 0;
 
-  late Future<List<BannerModel>> futureNominations;
-
-  @override
-  void initState() {
-    super.initState();
-    futureNominations = fetchNominations();
-  }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        FutureBuilder<List<BannerModel>>(
-          future: futureNominations,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return CarouselSlider.builder(
-                itemCount: snapshot.data!.length,
-                options: CarouselOptions(
-                  height: size.width * 0.65,
-                  autoPlay: true,
-                  viewportFraction: 1,
-                  enlargeCenterPage: true,
-                  enlargeStrategy: CenterPageEnlargeStrategy.height,
-                  autoPlayInterval: const Duration(milliseconds: 7000),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  onPageChanged: (index, reason) => setState(
-                    () => activateIndex = index,
-                  ),
-                ),
-                itemBuilder: (context, index, realIndex) {
-                  return _buildImage(context, snapshot.data![index], size);
-                },
-              );
-            }
-            return Container(
-                width: size.width,
-                height: size.width * 0.65,
-                color: kButtonColor);
-          },
+    return CarouselSlider.builder(
+      itemCount: widget.data.length,
+      options: CarouselOptions(
+        height: size.width * 0.65,
+        autoPlay: true,
+        viewportFraction: 1,
+        enlargeCenterPage: true,
+        enlargeStrategy: CenterPageEnlargeStrategy.height,
+        autoPlayInterval: const Duration(milliseconds: 7000),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        onPageChanged: (index, reason) => setState(
+          () => activateIndex = index,
         ),
-      ],
+      ),
+      itemBuilder: (context, index, realIndex) {
+        return _buildImage(context, widget.data[index], size);
+      },
     );
   }
 

@@ -7,32 +7,16 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../services/service.dart';
 import '../../../contains.dart';
+import '../../book/book.dart';
 import '../../utils/heading.dart';
 
-final List<String> imgList = [
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/59/sore-wa-rei-no-shiwaza-desu.jpg'
-];
+final String base_Url = Service.base_Url;
 
-class NewBookUpdate extends StatefulWidget {
-  const NewBookUpdate({super.key});
+class NewBookUpdate extends StatelessWidget {
+  const NewBookUpdate({super.key, required this.data});
 
-  @override
-  State<NewBookUpdate> createState() => _NewBookUpdateState();
-}
+  final List<dynamic> data;
 
-class _NewBookUpdateState extends State<NewBookUpdate> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -54,10 +38,10 @@ class _NewBookUpdateState extends State<NewBookUpdate> {
             child: ScrollConfiguration(
               behavior: MyBehavior(),
               child: ListView.builder(
-                  itemCount: imgList.length,
+                  itemCount: data.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, index) =>
-                      _buildItem(index)),
+                      _buildItem(context, data, index)),
             ),
           )
         ],
@@ -65,18 +49,21 @@ class _NewBookUpdateState extends State<NewBookUpdate> {
     );
   }
 
-  Widget _buildItem(int index) => GestureDetector(
-        onTap: () {
-          print(index);
-        },
+  Widget _buildItem(BuildContext context, List data, int index) =>
+      GestureDetector(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BookPage(truyen_id: data[index].id))),
         child: Column(
           children: [
             Stack(
               children: [
                 CachedNetworkImage(
-                  imageUrl: imgList[index],
+                  imageUrl: '$base_Url/tcv/public/uploads/truyen/' +
+                      data[index].hinhanh,
                   imageBuilder: (context, imageProvider) => Container(
-                    margin: index == imgList.length - 1
+                    margin: index == data.length - 1
                         ? const EdgeInsets.only(right: 0)
                         : const EdgeInsets.only(right: 10),
                     height: 160,
@@ -84,7 +71,9 @@ class _NewBookUpdateState extends State<NewBookUpdate> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
                       image: DecorationImage(
-                          image: NetworkImage(imgList[index]),
+                          image: NetworkImage(
+                              '$base_Url/tcv/public/uploads/truyen/' +
+                                  data[index].hinhanh),
                           fit: BoxFit.cover),
                     ),
                   ),
@@ -108,7 +97,7 @@ class _NewBookUpdateState extends State<NewBookUpdate> {
                             horizontal: kDefautPadding / 3,
                             vertical: kDefautPadding / 4),
                         child: Text(
-                          'Chương 400',
+                          'Chương ${data[index].chuongmoinhat}',
                           style: GoogleFonts.mulish(
                               color: textColor,
                               fontSize: 11,
@@ -124,7 +113,7 @@ class _NewBookUpdateState extends State<NewBookUpdate> {
             SizedBox(
               width: 120,
               child: Text(
-                'Tầm Trảo Tiền Thế Chi Lữ 2',
+                '${data[index].tentruyen}',
                 style: GoogleFonts.mulish(
                     color: textColor,
                     fontSize: 13,

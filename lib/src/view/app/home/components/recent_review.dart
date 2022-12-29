@@ -8,30 +8,12 @@ import '../../../../services/service.dart';
 import '../../../contains.dart';
 import '../../utils/heading.dart';
 
-final List<String> imgList = [
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/59/sore-wa-rei-no-shiwaza-desu.jpg'
-];
+final String base_Url = Service.base_Url;
 
-class RecentReview extends StatefulWidget {
-  const RecentReview({super.key});
+class RecentReview extends StatelessWidget {
+  const RecentReview({super.key, required this.data});
+  final List<dynamic> data;
 
-  @override
-  State<RecentReview> createState() => _RecentReviewState();
-}
-
-class _RecentReviewState extends State<RecentReview> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -48,14 +30,14 @@ class _RecentReviewState extends State<RecentReview> {
               icon: Icon(CupertinoIcons.burst, color: Colors.white, size: 20)),
           Container(
             width: size.width - kDefautPadding,
-            height: 245,
+            height: 210,
             child: ScrollConfiguration(
               behavior: MyBehavior(),
               child: ListView.builder(
-                  itemCount: imgList.length,
+                  itemCount: data.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, index) =>
-                      _buildItem(index, size)),
+                      _buildItem(data, index, size)),
             ),
           )
         ],
@@ -63,9 +45,9 @@ class _RecentReviewState extends State<RecentReview> {
     );
   }
 
-  Widget _buildItem(int index, Size size) => Container(
+  Widget _buildItem(data, int index, Size size) => Container(
         width: 300,
-        height: 220,
+        height: 200,
         margin: index == 0
             ? const EdgeInsets.only(left: 0)
             : const EdgeInsets.only(left: kDefautPadding / 2),
@@ -81,8 +63,8 @@ class _RecentReviewState extends State<RecentReview> {
                   height: 35,
                   width: 35,
                   child: CachedNetworkImage(
-                    imageUrl:
-                        'https://kyoto-manga-proxy-5niz.onrender.com/proxy?url=http://www.nettruyenme.com&src=https://st.ntcdntempv3.com/data/comics/220/ta-that-su-khong-phai-la-cai-the-cao-nha-3904.jpg',
+                    imageUrl: '$base_Url/tcv/public/uploads/cus_avt/' +
+                        data[index].uphoto,
                     placeholder: (BuildContext context, String url) =>
                         ClipRRect(
                       borderRadius: BorderRadius.circular(50),
@@ -99,7 +81,7 @@ class _RecentReviewState extends State<RecentReview> {
                   SizedBox(
                     width: 170,
                     child: Text(
-                      'Trần Ngọc Hân Nhi',
+                      '${data[index].username}',
                       style: GoogleFonts.mulish(
                           color: textColor,
                           fontSize: 14,
@@ -113,7 +95,7 @@ class _RecentReviewState extends State<RecentReview> {
                   SizedBox(
                     width: 170,
                     child: Text(
-                      '24 ngày trước',
+                      '${data[index].ngaydang}',
                       style: GoogleFonts.mulish(
                           color: textColor,
                           fontSize: 12,
@@ -149,7 +131,7 @@ class _RecentReviewState extends State<RecentReview> {
                   SizedBox(
                     width: 230,
                     child: Text(
-                      'Đảo hải tặc duy nhất trên thế giới',
+                      '${data[index].tentruyen}',
                       style: GoogleFonts.mulish(
                           color: kSecondaryColor,
                           fontSize: 16,
@@ -163,7 +145,7 @@ class _RecentReviewState extends State<RecentReview> {
                   SizedBox(
                     width: 170,
                     child: Text(
-                      'Tác giả: Oda Eiichiro',
+                      'Tác giả: ${data[index].tacgia}',
                       style: GoogleFonts.mulish(
                           color: textColor,
                           fontSize: 13,
@@ -181,8 +163,8 @@ class _RecentReviewState extends State<RecentReview> {
                 child: Container(
                   width: 45,
                   child: CachedNetworkImage(
-                    imageUrl:
-                        'https://kyoto-manga-proxy-5niz.onrender.com/proxy?url=http://www.nettruyenme.com&src=https://st.ntcdntempv3.com/data/comics/220/ta-that-su-khong-phai-la-cai-the-cao-nha-3904.jpg',
+                    imageUrl: '$base_Url/tcv/public/uploads/truyen/' +
+                        data[index].hinhanh,
                     placeholder: (BuildContext context, String url) =>
                         Container(
                       width: 45,
@@ -207,7 +189,7 @@ class _RecentReviewState extends State<RecentReview> {
                   direction: Axis.horizontal),
               const SizedBox(width: 5),
               Text(
-                '( 4.5 / 5 )',
+                '( ${data[index].sosao.toStringAsFixed(1)} / 5 )',
                 style: GoogleFonts.mulish(
                     color: kSecondaryColor,
                     fontSize: 13,
@@ -220,7 +202,7 @@ class _RecentReviewState extends State<RecentReview> {
           SizedBox(
             width: size.width - kDefautPadding,
             child: Text(
-              'đọc giải trí ổn. tuy nhiên mức độ mọi người thèm ăn có chút lố, ko hay. tu sĩ cao cấp mà định lực ko nổi món ăn cấp thấp. đọc giải trí ổn. tuy nhiên mức độ mọi người thèm ăn có chút lố, ko hay. tu sĩ cao cấp mà định lực ko nổi món ăn cấp thấp..',
+              '${data[index].noidung}',
               style: GoogleFonts.mulish(
                   color: textColor, fontSize: 13, fontWeight: FontWeight.w300),
               overflow: TextOverflow.ellipsis,

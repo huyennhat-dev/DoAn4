@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../services/service.dart';
-import '../../../view/app/search/search.dart';
-import '../../../view/app/utils/button.dart';
-import '../../../view/contains.dart';
+import '../../../../services/service.dart';
+import '../../search/search.dart';
+import '../../utils/button.dart';
+import '../../../contains.dart';
 
 final String base_Url = Service.base_Url;
 
@@ -19,12 +19,15 @@ class AppHeader extends StatelessWidget {
       required this.uId,
       required this.uName,
       required this.uEmail,
-      required this.uPhoto});
+      required this.uPhoto,
+      required this.signOut});
 
   final String uId;
   final String uName;
   final String uEmail;
   final String uPhoto;
+
+  final VoidCallback signOut;
 
   void showInfomation(BuildContext context) {
     showGeneralDialog(
@@ -210,7 +213,7 @@ class AppHeader extends StatelessWidget {
                               kDefautPadding * 2,
                           child: Center(
                             child: Text(
-                              'Huy Hoang',
+                              '${uName}',
                               style: GoogleFonts.mulish(
                                   color: textColor,
                                   fontSize: 22,
@@ -234,7 +237,7 @@ class AppHeader extends StatelessWidget {
                           context,
                           'Đăng xuất',
                           Icon(Icons.logout, color: Colors.white, size: 20),
-                          () {},
+                          signOut,
                         ),
                       ],
                     ),

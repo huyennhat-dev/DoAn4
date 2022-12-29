@@ -2,12 +2,10 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/controller/book.dart';
-import 'package:client/src/view/app/utils/dialog/loading.dart';
 import 'package:client/src/view/app/widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../model/book.dart';
 import '../../../services/service.dart';
 import '../../contains.dart';
 import 'components/book_information.dart';
@@ -33,6 +31,12 @@ class _BookPageState extends State<BookPage> {
   void initState() {
     bookController.loadBook(widget.truyen_id);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    Get.delete<BookController>();
+    super.dispose();
   }
 
   @override

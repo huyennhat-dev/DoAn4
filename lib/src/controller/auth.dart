@@ -13,7 +13,7 @@ import '../services/google_sign_in.dart';
 class AuthController extends GetxController {
   String appName = Service.appFirstName + Service.appLastName;
 
-  Future signIn() async {
+  signIn() async {
     final user = await GoogleSignInApi.login();
 
     if (user == null) {
@@ -33,7 +33,7 @@ class AuthController extends GetxController {
         "email": user.email,
         'username': user.displayName,
         'imageUrl': user.photoUrl,
-        'password': "123456"
+        'password': "truyencv123"
       });
       await SharedPref().save('UID', u.id.toString());
       await SharedPref().save('UEMAIL', u.email.toString());

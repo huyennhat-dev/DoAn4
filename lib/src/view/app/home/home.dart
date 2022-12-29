@@ -1,10 +1,11 @@
+import 'package:client/src/view/app/widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/home.dart';
 import '../../../services/service.dart';
 import '../../contains.dart';
-import '../widget/header.dart';
+import 'components/header.dart';
 import 'components/banner.dart';
 import 'components/book_for_you.dart';
 import 'components/drawer.dart';
@@ -25,8 +26,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    homeController;
+    homeController.fetchHomeData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    Get.delete<HomeController>();
+    super.dispose();
   }
 
   @override
@@ -51,22 +58,31 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  AppHeader(
-                    uId: '${homeController.uId}',
-                    uName: '${homeController.uName}',
-                    uEmail: '${homeController.uEmail}',
-                    uPhoto: '${homeController.uPhoto}',
-                  ),
-                  AppBanner(),
-                  BookForYou(),
-                  NewBookUpdate(),
-                  TopVote(),
-                  RecentReview(),
-                  NewBook()
-                ],
-              ),
+              child: Obx(() => homeController.isLoading.value
+                  ? Container(
+                      height: size.height,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefautPadding * 1),
+                      child: LoadingWidget(message: "Loading..."),
+                    )
+                  : Column(
+                      children: [
+                        AppHeader(
+                          uId: '${homeController.uId}',
+                          uName: '${homeController.uName}',
+                          uEmail: '${homeController.uEmail}',
+                          uPhoto: '${homeController.uPhoto}',
+                          signOut: () => homeController.signOut(),
+                        ),
+                        AppBanner(data: homeController.banners!),
+                        BookForYou(),
+                        NewBookUpdate(data: homeController.newbookupdates!),
+                        TopVote(data: homeController.selectBooks!),
+                        RecentReview(data: homeController.recentReviews!),
+                        NewBook(data: homeController.newBooks!)
+                      ],
+                    )),
             ),
           )),
     );
