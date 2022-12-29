@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'home/home.dart';
 
@@ -17,7 +18,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const GetMaterialApp(
       title: 'Canabook',
       home: HomePage(),
       debugShowCheckedModeBanner: false,

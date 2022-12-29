@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../../controller/home.dart';
 import '../../../services/service.dart';
 import '../../contains.dart';
 import '../widget/header.dart';
@@ -11,8 +13,21 @@ import 'components/new_book_update.dart';
 import 'components/recent_review.dart';
 import 'components/top_vote.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  HomeController homeController = Get.put(HomeController());
+
+  @override
+  void initState() {
+    homeController;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +53,12 @@ class HomePage extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  AppHeader(),
+                  AppHeader(
+                    uId: '${homeController.uId}',
+                    uName: '${homeController.uName}',
+                    uEmail: '${homeController.uEmail}',
+                    uPhoto: '${homeController.uPhoto}',
+                  ),
                   AppBanner(),
                   BookForYou(),
                   NewBookUpdate(),

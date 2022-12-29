@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/src/view/app/login.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../services/google_sign_in.dart';
 import '../../../services/service.dart';
 import '../../../view/app/search/search.dart';
 import '../../../view/app/utils/button.dart';
@@ -16,19 +13,18 @@ import '../../../view/contains.dart';
 
 final String base_Url = Service.base_Url;
 
-class AppHeader extends StatefulWidget {
-  const AppHeader({super.key});
+class AppHeader extends StatelessWidget {
+  AppHeader(
+      {super.key,
+      required this.uId,
+      required this.uName,
+      required this.uEmail,
+      required this.uPhoto});
 
-  @override
-  State<AppHeader> createState() => _AppHeaderState();
-}
-
-class _AppHeaderState extends State<AppHeader> {
-  bool userLogin = false;
-
-  void userOnclick() {
-    showInfomation(context);
-  }
+  final String uId;
+  final String uName;
+  final String uEmail;
+  final String uPhoto;
 
   void showInfomation(BuildContext context) {
     showGeneralDialog(
@@ -37,9 +33,7 @@ class _AppHeaderState extends State<AppHeader> {
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (_, __, ___) => !userLogin
-          ? _buildLoginDialog(context, _)
-          : _buildLogoutDialog(context, _),
+      pageBuilder: (_, __, ___) => _buildLogoutDialog(context, _),
       transitionBuilder: (_, anim, __, child) {
         Tween<Offset> tween;
         if (anim.status == AnimationStatus.reverse) {
@@ -55,30 +49,6 @@ class _AppHeaderState extends State<AppHeader> {
     );
   }
 
-  Future signIn() async {
-    final user = await GoogleSignInApi.login();
-
-    if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Faild"),
-        ),
-      );
-    } else {
-      print(user.photoUrl);
-    }
-  }
-
-  Future<http.Response> googleSignIn(data) {
-    return http.post(
-      Uri.parse('$base_Url/tcv/public/api/v1/google_sign_in'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode(data),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -88,7 +58,7 @@ class _AppHeaderState extends State<AppHeader> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildHeaderLeft(context),
-          _buildHeaderRight(userLogin),
+          _buildHeaderRight(context),
         ],
       ),
     );
@@ -123,7 +93,7 @@ class _AppHeaderState extends State<AppHeader> {
         ],
       );
 
-  Widget _buildHeaderRight(bool loginStatus) => Row(
+  Widget _buildHeaderRight(BuildContext context) => Row(
         children: [
           ButtonSquare(
               onPressed: () => Navigator.push(context,
@@ -131,12 +101,12 @@ class _AppHeaderState extends State<AppHeader> {
               bgColor: kButtonColor,
               icon: Icon(CupertinoIcons.search, color: Colors.white, size: 26)),
           const SizedBox(width: 10),
-          loginStatus
+          uId != ""
               ? GestureDetector(
-                  onTap: () => userOnclick(),
+                  onTap: () => showInfomation(context),
                   child: CachedNetworkImage(
                       imageUrl:
-                          'https://i.pinimg.com/736x/b7/26/73/b72673d3ac44516defb82adea9edb909.jpg',
+                          "$base_Url/tcv/public/uploads/cus_avt/" + uPhoto,
                       imageBuilder: (context, imageProvider) => Container(
                           height: 40,
                           width: 40,
@@ -155,7 +125,10 @@ class _AppHeaderState extends State<AppHeader> {
                           Icon(Icons.error, color: kErrorColor)),
                 )
               : GestureDetector(
-                  onTap: () => userOnclick(),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen())),
                   child: Container(
                       height: 40,
                       width: 40,
@@ -167,83 +140,6 @@ class _AppHeaderState extends State<AppHeader> {
                           color: Colors.white, size: 32)),
                 )
         ],
-      );
-
-  Widget _buildLoginDialog(BuildContext context, BuildContext _) => Center(
-        child: Container(
-          height: 430,
-          width: (MediaQuery.of(context).size.width - kDefautPadding) * 0.9,
-          padding: const EdgeInsets.symmetric(
-              horizontal: kDefautPadding * 1, vertical: kDefautPadding / 1),
-          margin: const EdgeInsets.symmetric(horizontal: kDefautPadding / 1),
-          decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                  image: AssetImage('assets/image/jp-art.png'),
-                  fit: BoxFit.fitWidth,
-                  alignment: Alignment.bottomCenter)),
-          child: SizedBox.expand(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ButtonSquare(
-                          onPressed: () => Navigator.pop(context),
-                          icon: Icon(CupertinoIcons.arrow_left,
-                              color: Colors.white, size: 20),
-                          bgColor: kButtonColor),
-                      Text(
-                        'Đăng nhập',
-                        style: GoogleFonts.mulish(
-                            fontSize: 24,
-                            color: textColor,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(width: 40)
-                    ]),
-                const SizedBox(height: 40),
-                GestureDetector(
-                  onTap: signIn,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: kDefautPadding / 2),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: kDefautPadding / 1,
-                        vertical: kDefautPadding / 3),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        color: Colors.white),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 30,
-                          width: 30,
-                          child: Image.asset('assets/image/google.png',
-                              fit: BoxFit.cover),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Đăng nhập bằng Google',
-                          style: GoogleFonts.mulish(
-                              color: kPrimaryColor,
-                              fontSize: 16,
-                              decoration: TextDecoration.none,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
       );
 
   Widget _buildLogoutDialog(BuildContext context, BuildContext _) => Center(
@@ -285,8 +181,8 @@ class _AppHeaderState extends State<AppHeader> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: CachedNetworkImage(
-                            imageUrl:
-                                'https://i.pinimg.com/736x/b7/26/73/b72673d3ac44516defb82adea9edb909.jpg',
+                            imageUrl: '$base_Url/tcv/public/uploads/cus_avt/' +
+                                uPhoto,
                             imageBuilder: (context, imageProvider) => Container(
                               height: 100,
                               width: 100,

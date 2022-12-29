@@ -1,15 +1,15 @@
 import 'dart:convert';
 
+import 'package:client/src/controller/book.dart';
+import 'package:client/src/view/app/widget/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../model/chapter.dart';
 import '../../../services/service.dart';
 import '../../contains.dart';
 import 'components/chapter_content.dart';
 import 'components/header.dart';
-
-import 'package:http/http.dart' as http;
 
 final String base_Url = Service.base_Url;
 
@@ -25,43 +25,18 @@ class BookChapter extends StatefulWidget {
 }
 
 class _BookChapterState extends State<BookChapter> {
-  var userJson;
-  var user;
-  var cusId;
-  var slug = 1;
-  late Future<Chapter> futureChapter;
-
-  Future<Chapter> fetchChapter(slug) async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    userJson = localStorage.getString('user');
-    if (userJson != null) {
-      user = json.decode(userJson!);
-    }
-    if (user != null) {
-      cusId = user['id'].toString();
-    } else {
-      cusId = '-1';
-    }
-    final response = await http.get(Uri.parse(
-        '$base_Url/tcv/public/api/v1/books/1/${widget.truyen_id}/$slug'));
-    if (response.statusCode == 200) {
-      return Chapter.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Có lỗi rồi!');
-    }
-  }
+  BookController bookController = Get.put(BookController());
+  late PageController controller;
 
   @override
   void initState() {
     super.initState();
-    slug = widget.slugChuong;
-    futureChapter = fetchChapter(slug);
+    bookController.loadAllChapter(widget.truyen_id);
+    controller = PageController(initialPage: widget.slugChuong - 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
@@ -71,25 +46,36 @@ class _BookChapterState extends State<BookChapter> {
       ),
       body: Container(
         alignment: Alignment.topCenter,
-        child: FutureBuilder<Chapter>(
-            future: futureChapter,
-            builder: (context, snapshot) {
-              if (snapshot.hasData)
-                return Column(
-                  children: [
-                    BookChapterHeader(
-                        chapterName:
-                            'Chương ${snapshot.data!.slug}: ${snapshot.data!.tenchuong}'),
-                    Expanded(
-                        flex: 1,
-                        child: BookChapterContent(
-                          content: snapshot.data!.noidung.toString(),
-                        ))
-                  ],
-                );
-
-              return Container();
-            }),
+        child: ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: Obx(
+              () => bookController.isLoading.value
+                  ? Container(height: 50)
+                  : PageView.builder(
+                      controller: controller,
+                      itemCount: bookController.chapters!.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => Column(
+                            children: [
+                              BookChapterHeader(
+                                chapterName: "Chương ${index + 1}: " +
+                                    bookController.chapters![index].tenchuong
+                                        .toString(),
+                                onPressed: () => showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => Container(),
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: BookChapterContent(
+                                    truyenId: widget.truyen_id.toString(),
+                                    slug: bookController.chapters![index].slug
+                                        .toString(),
+                                  ))
+                            ],
+                          )),
+            )),
       ),
     );
   }

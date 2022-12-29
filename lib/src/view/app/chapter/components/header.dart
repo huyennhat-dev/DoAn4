@@ -6,9 +6,11 @@ import '../../../contains.dart';
 import '../../utils/button.dart';
 
 class BookChapterHeader extends StatelessWidget {
-  const BookChapterHeader({super.key, required this.chapterName});
+  const BookChapterHeader(
+      {super.key, required this.chapterName, required this.onPressed});
 
   final String chapterName;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class BookChapterHeader extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Container(
-                width: size.width - (kDefautPadding + 190),
+                width: size.width - (kDefautPadding + 90),
                 height: 40,
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(
@@ -54,28 +56,10 @@ class BookChapterHeader extends StatelessWidget {
               )
             ],
           ),
-          Row(
-            children: [
-              ButtonSquare(
-                onPressed: () {},
-                icon: Icon(CupertinoIcons.arrow_left,
-                    color: Colors.white, size: 20),
-                bgColor: kButtonColor,
-              ),
-              const SizedBox(width: 10),
-              ButtonSquare(
-                onPressed: () {},
-                icon: Icon(CupertinoIcons.arrow_right,
-                    color: Colors.white, size: 20),
-                bgColor: kButtonColor,
-              ),
-              const SizedBox(width: 10),
-              ButtonSquare(
-                onPressed: () {},
-                icon: Icon(Icons.settings, color: Colors.white, size: 20),
-                bgColor: kButtonColor,
-              ),
-            ],
+          ButtonSquare(
+            onPressed: onPressed,
+            icon: Icon(Icons.settings, color: Colors.white, size: 20),
+            bgColor: kButtonColor,
           )
         ],
       ),

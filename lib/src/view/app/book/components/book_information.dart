@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../contains.dart';
 import '../../chapter/chapter.dart';
 import '../../utils/button.dart';
-import '../../vote/vote.dart';
 
 class BookInfomation extends StatefulWidget {
   const BookInfomation(
