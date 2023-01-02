@@ -32,4 +32,11 @@ class HomeRepo {
     if (res.statusCode == 200) return json.decode(res.body);
     throw Exception('Có lỗi rồi!');
   }
+
+  static Future fetchBookRecommendation(id) async {
+    final res = await http.get(
+        Uri.parse('$base_Url/tcv/public/api/v2/book_recommendation/${id}'));
+    if (res.statusCode == 200) return json.decode(res.body);
+    throw Exception('Có lỗi rồi!');
+  }
 }

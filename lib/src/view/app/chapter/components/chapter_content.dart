@@ -23,11 +23,14 @@ class _BookChapterContentState extends State<BookChapterContent> {
   String? cusId;
 
   Future<Chapter> loadChapter() async {
-    String uid = (await SharedPref().read('UID'))!;
-    uid != null ? cusId = uid : cusId = '0';
-    final body =
-        await ChapterRepo.fetchChapter(cusId, widget.truyenId, widget.slug);
-    return Chapter.fromJson(body);
+    try {
+      String? uid = await SharedPref().read('UID');
+      final body = await ChapterRepo.fetchChapter(
+          uid != null ? uid : -1, widget.truyenId, widget.slug);
+      return Chapter.fromJson(body);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override

@@ -89,14 +89,17 @@ class TopVote extends StatelessWidget {
                           vertical: kDefautPadding / 2),
                       alignment: Alignment.bottomCenter,
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(7),
+                              topLeft: Radius.circular(7)),
                           gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
-                        colors: [
-                          Color(0xFFFFD700).withOpacity(1.0),
-                          Color(0xFFFFD700).withOpacity(0.25)
-                        ],
-                      )),
+                            begin: Alignment.bottomCenter,
+                            stops: [0.0, 1.0],
+                            colors: [
+                              Color(0xFFFFD700).withOpacity(1.0),
+                              Color(0xFFFFD700).withOpacity(0.25)
+                            ],
+                          )),
                       child: RotatedBox(
                         quarterTurns: -1,
                         child: Text(
@@ -121,14 +124,17 @@ class TopVote extends StatelessWidget {
                           vertical: kDefautPadding / 2),
                       alignment: Alignment.bottomCenter,
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(7),
+                              topLeft: Radius.circular(7)),
                           gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
-                        colors: [
-                          Color(0xFFC0C0C0).withOpacity(1.0),
-                          Color(0xFFC0C0C0).withOpacity(0.25)
-                        ],
-                      )),
+                            begin: Alignment.bottomCenter,
+                            stops: [0.0, 1.0],
+                            colors: [
+                              Color(0xFFC0C0C0).withOpacity(1.0),
+                              Color(0xFFC0C0C0).withOpacity(0.25)
+                            ],
+                          )),
                       child: RotatedBox(
                         quarterTurns: -1,
                         child: Text(
@@ -153,14 +159,17 @@ class TopVote extends StatelessWidget {
                           vertical: kDefautPadding / 2),
                       alignment: Alignment.bottomCenter,
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(7),
+                              topLeft: Radius.circular(7)),
                           gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
-                        colors: [
-                          Color(0xFFCD7F32).withOpacity(1.0),
-                          Color(0xFFCD7F32).withOpacity(0.25)
-                        ],
-                      )),
+                            begin: Alignment.bottomCenter,
+                            stops: [0.0, 1.0],
+                            colors: [
+                              Color(0xFFCD7F32).withOpacity(1.0),
+                              Color(0xFFCD7F32).withOpacity(0.25)
+                            ],
+                          )),
                       child: RotatedBox(
                         quarterTurns: -1,
                         child: Text(
@@ -185,14 +194,17 @@ class TopVote extends StatelessWidget {
                           vertical: kDefautPadding / 2),
                       alignment: Alignment.bottomCenter,
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(7),
+                              topLeft: Radius.circular(7)),
                           gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
-                        colors: [
-                          Color(0xFF3F3C36).withOpacity(1.0),
-                          Color(0xFF3F3C36).withOpacity(0.25)
-                        ],
-                      )),
+                            begin: Alignment.bottomCenter,
+                            stops: [0.0, 1.0],
+                            colors: [
+                              Color(0xFF3F3C36).withOpacity(1.0),
+                              Color(0xFF3F3C36).withOpacity(0.25)
+                            ],
+                          )),
                       child: RotatedBox(
                         quarterTurns: -1,
                         child: Text(

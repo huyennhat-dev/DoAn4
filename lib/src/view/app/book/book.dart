@@ -6,6 +6,7 @@ import 'package:client/src/view/app/widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../helpers/shared_pref.dart';
 import '../../../services/service.dart';
 import '../../contains.dart';
 import 'components/book_information.dart';
@@ -29,7 +30,8 @@ class _BookPageState extends State<BookPage> {
 
   @override
   void initState() {
-    bookController.loadBook(widget.truyen_id);
+    String? uid = SharedPref().read('UID').toString();
+    bookController.loadBook(68, widget.truyen_id);
     super.initState();
   }
 
@@ -131,6 +133,8 @@ class _BookPageState extends State<BookPage> {
                                     ],
                                     rate: (bookController.book!.sosao)!
                                         .toDouble(),
+                                    chuongslug: bookController.book!.chuongslug!
+                                        .toInt(),
                                     chuongmoinhat: bookController
                                         .book!.danhsachchuong!.length,
                                     truyenid: bookController.book!.id!.toInt(),

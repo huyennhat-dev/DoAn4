@@ -1,5 +1,3 @@
-import 'package:client/src/model/chapter.dart';
-import 'package:client/src/model/list_chapter.dart';
 import 'package:get/get.dart';
 
 import '../model/book.dart';
@@ -9,10 +7,10 @@ class BookController extends GetxController {
   RxBool isLoading = false.obs;
   Book? book;
 
-  loadBook(id) async {
+  loadBook(uid, id) async {
     try {
       isLoading(true);
-      final body = await BookRepo.fetchBook(id);
+      final body = await BookRepo.fetchBook(uid, id);
       book = Book.fromJson(body);
     } catch (e) {
       throw Exception(e);

@@ -1,3 +1,4 @@
+import 'package:client/src/model/book_reco.dart';
 import 'package:client/src/model/home_book.dart';
 import 'package:client/src/repo/home.dart';
 import 'package:get/get.dart';
@@ -14,19 +15,14 @@ class HomeController extends GetxController {
   RxString uEmail = "".obs;
   RxString uPhoto = "".obs;
 
-  List<dynamic>? banners;
-  List<dynamic>? newbookupdates;
-  List<dynamic>? selectBooks;
-  List<dynamic>? recentReviews;
-  List<dynamic>? newBooks;
+  List<dynamic> banners = List<dynamic>.empty(growable: true).obs;
+  List<dynamic> newbookupdates = List<dynamic>.empty(growable: true).obs;
+  List<dynamic> selectBooks = List<dynamic>.empty(growable: true).obs;
+  List<dynamic> recentReviews = List<dynamic>.empty(growable: true).obs;
+  List<dynamic> newBooks = List<dynamic>.empty(growable: true).obs;
+  List<dynamic> bookRecommendations = List<dynamic>.empty(growable: true).obs;
 
-  @override
-  void onInit() {
-    setUsername();
-    super.onInit();
-  }
-
-  void setUsername() async {
+  setUsername() async {
     uId.value = (await SharedPref().read('UID'))!;
     uName.value = (await SharedPref().read('USERNAME'))!;
     uEmail.value = (await SharedPref().read('UEMAIL'))!;
@@ -38,19 +34,20 @@ class HomeController extends GetxController {
     try {
       isLoading(true);
       final body = await HomeRepo.fetchHomeData();
-      print(body['recentreview']);
-      banners = body['banner'].map((data) => HomeBook.fromJson(data)).toList();
-      newbookupdates =
-          body['newbookupdate'].map((data) => HomeBook.fromJson(data)).toList();
-      selectBooks =
-          body['selectbook'].map((data) => HomeBook.fromJson(data)).toList();
+      banners.addAll(
+          body['banner'].map((data) => HomeBook.fromJson(data)).toList());
+      newbookupdates.addAll(body['newbookupdate']
+          .map((data) => HomeBook.fromJson(data))
+          .toList());
+      selectBooks.addAll(
+          body['selectbook'].map((data) => HomeBook.fromJson(data)).toList());
 
-      recentReviews = body['recentreview']
+      recentReviews.addAll(body['recentreview']
           .map((data) => RecentReview.fromJson(data))
-          .toList();
+          .toList());
 
-      newBooks =
-          body['newbook'].map((data) => HomeBook.fromJson(data)).toList();
+      newBooks.addAll(
+          body['newbook'].map((data) => HomeBook.fromJson(data)).toList());
     } catch (e) {
       throw Exception(e);
     } finally {
@@ -58,16 +55,34 @@ class HomeController extends GetxController {
     }
   }
 
-  signOut() async {
-    await SharedPref().remove('UID');
-    await SharedPref().remove('UEMAIL');
-    await SharedPref().remove('USERNAME ');
-    await SharedPref().remove('UPHOTO');
+  fetchBookRecommendation(id) async {
+    try {
+      final body = await HomeRepo.fetchBookRecommendation(id);
+      bookRecommendations =
+          body.map((data) => BookRecommendation.fromJson(data)).toList();
+    } catch (e) {
+      throw Exception(e);
+    } finally {}
+  }
 
-    Get.offAll(
-      const HomePage(),
-      transition: Transition.cupertino,
-      duration: const Duration(milliseconds: 300),
-    );
+  signOut() async {
+    try {
+      isLoading(true);
+
+      await SharedPref().remove('UID');
+      await SharedPref().remove('UEMAIL');
+      await SharedPref().remove('USERNAME ');
+      await SharedPref().remove('UPHOTO');
+
+      Get.offAll(
+        const HomePage(),
+        transition: Transition.cupertino,
+        duration: const Duration(milliseconds: 300),
+      );
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      isLoading(false);
+    }
   }
 }

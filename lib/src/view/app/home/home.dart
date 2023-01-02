@@ -26,8 +26,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    homeController.setUsername();
+    homeController.fetchBookRecommendation(
+        homeController.uId != "" ? homeController.uId : -1);
     homeController.fetchHomeData();
+
     super.initState();
+  }
+
+  void onSignOutClick(BuildContext context) async {
+    Navigator.pop(context);
+    await homeController.signOut();
+  }
+
+  Future<void> pullRefresh() async {
+    Get.delete<HomeController>();
+    homeController.setUsername();
+    homeController.fetchHomeData();
+    homeController.fetchBookRecommendation(
+        homeController.uId != "" ? homeController.uId : -1);
   }
 
   @override
@@ -53,36 +70,40 @@ class _HomePageState extends State<HomePage> {
       body: Container(
           alignment: Alignment.topCenter,
           constraints: const BoxConstraints.expand(),
-          child: ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              physics: BouncingScrollPhysics(),
-              child: Obx(() => homeController.isLoading.value
-                  ? Container(
-                      height: size.height,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefautPadding * 1),
-                      child: LoadingWidget(message: "Loading..."),
-                    )
-                  : Column(
-                      children: [
-                        AppHeader(
-                          uId: '${homeController.uId}',
-                          uName: '${homeController.uName}',
-                          uEmail: '${homeController.uEmail}',
-                          uPhoto: '${homeController.uPhoto}',
-                          signOut: () => homeController.signOut(),
-                        ),
-                        AppBanner(data: homeController.banners!),
-                        BookForYou(),
-                        NewBookUpdate(data: homeController.newbookupdates!),
-                        TopVote(data: homeController.selectBooks!),
-                        RecentReview(data: homeController.recentReviews!),
-                        NewBook(data: homeController.newBooks!)
-                      ],
-                    )),
+          child: RefreshIndicator(
+            onRefresh: pullRefresh,
+            color: kErrorColor,
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
+                child: Obx(() => homeController.isLoading.value
+                    ? Container(
+                        height: size.height,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefautPadding * 1),
+                        child: LoadingWidget(message: "Loading..."),
+                      )
+                    : Column(
+                        children: [
+                          AppHeader(
+                            uId: '${homeController.uId}',
+                            uName: '${homeController.uName}',
+                            uEmail: '${homeController.uEmail}',
+                            uPhoto: '${homeController.uPhoto}',
+                            signOut: () => onSignOutClick(context),
+                          ),
+                          AppBanner(data: homeController.banners),
+                          BookForYou(data: homeController.bookRecommendations),
+                          NewBookUpdate(data: homeController.newbookupdates),
+                          TopVote(data: homeController.selectBooks),
+                          RecentReview(data: homeController.recentReviews),
+                          NewBook(data: homeController.newBooks)
+                        ],
+                      )),
+              ),
             ),
           )),
     );

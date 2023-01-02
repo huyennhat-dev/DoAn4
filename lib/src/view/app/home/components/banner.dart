@@ -96,10 +96,9 @@ class _AppBannerState extends State<AppBanner> {
             child: Text(
               data.tentruyen,
               style: GoogleFonts.mulish(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),

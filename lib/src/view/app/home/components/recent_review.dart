@@ -28,18 +28,33 @@ class RecentReview extends StatelessWidget {
               status: true,
               onPressed: () {},
               icon: Icon(CupertinoIcons.burst, color: Colors.white, size: 20)),
-          Container(
-            width: size.width - kDefautPadding,
-            height: 210,
-            child: ScrollConfiguration(
-              behavior: MyBehavior(),
-              child: ListView.builder(
-                  itemCount: data.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, index) =>
-                      _buildItem(data, index, size)),
-            ),
-          )
+          data.length == 0
+              ? Container(
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: kQuaternaryColor,
+                      borderRadius: BorderRadius.circular(7)),
+                  child: Text(
+                    "Chưa có đánh giá nào gần đây",
+                    style: GoogleFonts.mulish(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: textColor),
+                  ),
+                )
+              : Container(
+                  width: size.width - kDefautPadding,
+                  height: 210,
+                  child: ScrollConfiguration(
+                    behavior: MyBehavior(),
+                    child: ListView.builder(
+                        itemCount: data.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) =>
+                            _buildItem(data, index, size)),
+                  ),
+                )
         ],
       ),
     );

@@ -3,22 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../services/service.dart';
 import '../../../contains.dart';
+import '../../book/book.dart';
 
-final List<String> imgList = [
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg',
-  'https://st.ntcdntempv3.com/data/comics/42/komi-khong-the-giao-tiep.jpg',
-  'https://st.ntcdntempv3.com/data/comics/70/dan-anh-xau-xa.jpg',
-  'https://st.ntcdntempv3.com/data/comics/78/yofukashi-no-uta.jpg',
-  'https://st.ntcdntempv3.com/data/comics/113/mairimashita-iruma-kun.jpg'
-];
+final String base_Url = Service.base_Url;
 
 class BookForYou extends StatelessWidget {
-  const BookForYou({super.key});
+  const BookForYou({super.key, required this.data});
+  final List<dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +24,8 @@ class BookForYou extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildHeading('Có thể bạn sẽ muốn đọc', size, false),
-          _buildListBook(size),
-          _buildHeading('Xem thêm', size, true),
+          _buildListBook(data, size),
+          // _buildHeading('Xem thêm', size, true),
         ],
       ),
     );
@@ -76,73 +69,67 @@ class BookForYou extends StatelessWidget {
         ),
       );
 
-  Widget _buildListBook(Size size) => Container(
-        width: size.width - kDefautPadding,
-        child: Column(
-          children: [
-            for (int i = 0; i <= imgList.length - 1; i++) _buildItem(i, size)
-          ],
-        ),
-      );
+  Widget _buildListBook(List data, Size size) => Container(
+      width: size.width - kDefautPadding,
+      height: 100 * 15,
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: data.length,
+        itemBuilder: (context, index) => _buildItem(context, data, index, size),
+      ));
 
-  Widget _buildItem(int i, Size size) => Container(
-        height: 100,
-        width: size.width - kDefautPadding,
-        color: i % 2 == 0 ? kQuaternaryColor : kTertiaryColor,
-        padding: EdgeInsets.all(kDefautPadding / 3),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(7),
-              child: CachedNetworkImage(
-                imageUrl: imgList[i],
-                placeholder: (BuildContext context, String url) => ClipRRect(
-                  borderRadius: BorderRadius.circular(7),
-                  child: Container(
-                    width: (100 - (kDefautPadding / 3) * 2) * (3 / 4),
-                    height: 100 - (kDefautPadding / 3) * 2,
-                    color: kQuaternaryColor,
-                  ),
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: size.width - (kDefautPadding + 90),
-                  child: Text(
-                    'Đảo hải tặc có một không hai trên thế giới',
-                    style: GoogleFonts.mulish(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
+  Widget _buildItem(BuildContext context, List data, int i, Size size) =>
+      GestureDetector(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BookPage(truyen_id: data[i].id))),
+        child: Container(
+          height: 100,
+          width: size.width - kDefautPadding,
+          color: i % 2 == 0 ? kQuaternaryColor : kTertiaryColor,
+          padding: EdgeInsets.all(kDefautPadding / 3),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      '$base_Url/tcv/public/uploads/truyen/' + data[i].hinhanh,
+                  placeholder: (BuildContext context, String url) => ClipRRect(
+                    borderRadius: BorderRadius.circular(7),
+                    child: Container(
+                      width: (100 - (kDefautPadding / 3) * 2) * (3 / 4),
+                      height: 100 - (kDefautPadding / 3) * 2,
+                      color: kQuaternaryColor,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
                   ),
+                  fit: BoxFit.cover,
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  'Chương 1080',
-                  style: GoogleFonts.mulish(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: size.width - (kDefautPadding + 90),
+                    child: Text(
+                      '${data[i].tentruyen}',
+                      style: GoogleFonts.mulish(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-                const SizedBox(height: 5),
-                SizedBox(
-                  width: size.width - (kDefautPadding + 90),
-                  child: Text(
-                    'Action - Drama - Manga - Romance - School Life - Trinh thám',
+                  const SizedBox(height: 3),
+                  Text(
+                    'Chương ${data[i].chuongmoinhat}',
                     style: GoogleFonts.mulish(
                       color: Colors.white,
                       fontSize: 14,
@@ -151,10 +138,36 @@ class BookForYou extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
-                ),
-              ],
-            )
-          ],
+                  const SizedBox(height: 3),
+                  Text(
+                    'Tác giả: ${data[i].tacgia}',
+                    style: GoogleFonts.mulish(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 3),
+                  SizedBox(
+                    width: size.width - (kDefautPadding + 90),
+                    child: Text(
+                      '${data[i].theloai} - ${data[i].thegioi} - ${data[i].tinhcach} - ${data[i].luuphai}m',
+                      style: GoogleFonts.mulish(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       );
 }

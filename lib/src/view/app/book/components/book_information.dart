@@ -22,7 +22,8 @@ class BookInfomation extends StatefulWidget {
       required this.desc,
       required this.rate,
       required this.truyenid,
-      required this.chuongmoinhat});
+      required this.chuongmoinhat,
+      required this.chuongslug});
 
   final String image;
   final String bookName;
@@ -31,6 +32,7 @@ class BookInfomation extends StatefulWidget {
   final String desc;
   final double rate;
   final int truyenid;
+  final int chuongslug;
   final int chuongmoinhat;
   final List<String> category;
 
@@ -193,28 +195,42 @@ class _BookInfomationState extends State<BookInfomation> {
   Widget _buildButtonGroup() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ButtonCus(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BookChapter(
-                          truyen_id: widget.truyenid,
-                          slugChuong: widget.chuongmoinhat))),
-              text: 'Đọc ngay',
-              bgColor: kSecondaryColor,
-              textColor: textColor,
-              fontSize: 15),
-          const SizedBox(width: 10),
-          ButtonCus(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BookChapter(
-                          truyen_id: widget.truyenid, slugChuong: 1))),
-              text: 'Đọc từ đầu',
-              bgColor: Colors.white,
-              textColor: Colors.black,
-              fontSize: 15),
+          widget.chuongslug > 0
+              ? ButtonCus(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BookChapter(
+                              truyen_id: widget.truyenid,
+                              slugChuong: widget.chuongslug))),
+                  text: 'Đọc tiếp',
+                  bgColor: kSecondaryColor,
+                  textColor: textColor,
+                  fontSize: 15)
+              : ButtonCus(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BookChapter(
+                              truyen_id: widget.truyenid,
+                              slugChuong: widget.chuongmoinhat))),
+                  text: 'Đọc ngay',
+                  bgColor: kSecondaryColor,
+                  textColor: textColor,
+                  fontSize: 15),
+          SizedBox(width: widget.chuongslug > 0 ? 0 : 10),
+          widget.chuongslug > 0
+              ? SizedBox()
+              : ButtonCus(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BookChapter(
+                              truyen_id: widget.truyenid, slugChuong: 1))),
+                  text: 'Đọc từ đầu',
+                  bgColor: Colors.white,
+                  textColor: Colors.black,
+                  fontSize: 15),
           const SizedBox(width: 10),
           ButtonSquare(
               onPressed: () {},

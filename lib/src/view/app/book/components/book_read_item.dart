@@ -1,19 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/src/model/lib_book.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../services/service.dart';
 import '../../../contains.dart';
+import '../book.dart';
+
+final String base_Url = Service.base_Url;
 
 class BookReadItem extends StatelessWidget {
-  const BookReadItem({super.key, required this.onPressed});
+  const BookReadItem({super.key, required this.data});
 
-  final VoidCallback onPressed;
+  final BookLibrary data;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: onPressed,
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  BookPage(truyen_id: data.truyenId!.toInt()))),
       child: Container(
         height: ((390 - 40) / 5) * 4 / 3 + 20,
         padding: const EdgeInsets.symmetric(
@@ -29,8 +38,7 @@ class BookReadItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildItemImage(size,
-                'https://st.ntcdntempv3.com/data/comics/35/arrive-the-flower-of-hope-will-bloom-one-2458.jpg'),
+            _buildItemImage(size),
             const SizedBox(width: 10),
             _buildItemRight(size),
           ],
@@ -39,13 +47,13 @@ class BookReadItem extends StatelessWidget {
     );
   }
 
-  Widget _buildItemImage(Size size, String image) => SizedBox(
+  Widget _buildItemImage(Size size) => SizedBox(
         width: (390 - 40) / 5,
         height: ((390 - 40) / 5) * 4 / 3,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(7),
           child: CachedNetworkImage(
-            imageUrl: image,
+            imageUrl: '$base_Url/tcv/public/uploads/truyen/${data.hinhanh}',
             placeholder: (BuildContext context, String url) => Container(
               height: ((size.width - 40) / 5) * 4 / 3,
               width: (size.width - 40) / 5,
@@ -69,8 +77,7 @@ class BookReadItem extends StatelessWidget {
           children: [
             SizedBox(
               width: (size.width - 40) / 5 * 4 - 10,
-              child: Text(
-                  'Võ Hiệp: Ở Tiểu Trấn Mở Tửu Quán, Nhặt Thi Sư Phi Huyên',
+              child: Text('${data.tentruyen}',
                   style: GoogleFonts.mulish(
                       color: textColor,
                       fontSize: 15,
@@ -81,7 +88,7 @@ class BookReadItem extends StatelessWidget {
             const SizedBox(height: 5),
             SizedBox(
               width: (size.width - 40) / 5 * 4 - 10,
-              child: Text('Tác giả: Sư Phi Huyên',
+              child: Text('Tác giả: ${data.tacgia}',
                   style: GoogleFonts.mulish(
                       color: textColor,
                       fontSize: 13,
@@ -99,7 +106,7 @@ class BookReadItem extends StatelessWidget {
                 decoration: BoxDecoration(
                     border: Border.all(color: kSecondaryColor, width: 1),
                     borderRadius: BorderRadius.circular(5)),
-                child: Text('Huyền huyễn',
+                child: Text('${data.theloai}',
                     style: GoogleFonts.mulish(
                         color: textColor,
                         fontSize: 13,
@@ -108,7 +115,7 @@ class BookReadItem extends StatelessWidget {
               const SizedBox(width: 10),
               const Icon(Icons.book, color: textColor, size: 16),
               const SizedBox(width: 2),
-              Text('10 / 100',
+              Text('${data.chuongSlug} / ${data.tongsochuong}',
                   style: GoogleFonts.mulish(
                       color: textColor,
                       fontSize: 13,
@@ -118,3 +125,5 @@ class BookReadItem extends StatelessWidget {
         ),
       );
 }
+
+class CupertinoPageRoute {}
