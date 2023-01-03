@@ -10,9 +10,10 @@ import '../book.dart';
 final String base_Url = Service.base_Url;
 
 class BookReadItem extends StatelessWidget {
-  const BookReadItem({super.key, required this.data});
+  const BookReadItem({super.key, required this.data, required this.onDelete});
 
   final BookLibrary data;
+  final VoidCallback onDelete;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -40,7 +41,7 @@ class BookReadItem extends StatelessWidget {
           children: [
             _buildItemImage(size),
             const SizedBox(width: 10),
-            _buildItemRight(size),
+            _buildItemRight(context, size),
           ],
         ),
       ),
@@ -48,46 +49,66 @@ class BookReadItem extends StatelessWidget {
   }
 
   Widget _buildItemImage(Size size) => SizedBox(
-        width: (390 - 40) / 5,
-        height: ((390 - 40) / 5) * 4 / 3,
+        width: 70,
+        height: 70 * 4 / 3,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(7),
           child: CachedNetworkImage(
             imageUrl: '$base_Url/tcv/public/uploads/truyen/${data.hinhanh}',
             placeholder: (BuildContext context, String url) => Container(
-              height: ((size.width - 40) / 5) * 4 / 3,
-              width: (size.width - 40) / 5,
-              color: kQuaternaryColor,
-            ),
+                height: 70 * 4 / 3, width: 70, color: kQuaternaryColor),
             fit: BoxFit.cover,
             errorWidget: (context, url, error) => Container(
-                height: ((size.width - 40) / 5) * 4 / 3,
-                width: (size.width - 40) / 5,
-                color: kQuaternaryColor),
+                height: 70 * 4 / 3, width: 70, color: kQuaternaryColor),
           ),
         ),
       );
 
-  Widget _buildItemRight(Size size) => Container(
-        width: (size.width - 40) / 5 * 4 - 10,
-        height: ((390 - 40) / 5) * 4 / 3,
+  Widget _buildItemRight(BuildContext context, Size size) => Container(
+        width: (size.width - 40) - 80,
+        height: 70 * 4 / 3,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: (size.width - 40) / 5 * 4 - 10,
-              child: Text('${data.tentruyen}',
-                  style: GoogleFonts.mulish(
-                      color: textColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: (size.width - 40) - 110,
+                  child: Text('${data.tentruyen}',
+                      style: GoogleFonts.mulish(
+                          color: textColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2),
+                ),
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent),
+                    child: PopupMenuButton(
+                      color: Colors.white,
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: Text('Xóa khỏi tủ truyện'),
+                          height: 30,
+                          onTap: onDelete,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 5),
             SizedBox(
-              width: (size.width - 40) / 5 * 4 - 10,
+              width: (size.width - 40) - 110,
               child: Text('Tác giả: ${data.tacgia}',
                   style: GoogleFonts.mulish(
                       color: textColor,

@@ -69,8 +69,11 @@ class _BookReadState extends State<BookRead> {
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.only(bottom: 20),
                 itemCount: controller.books.length,
-                itemBuilder: (_, index) =>
-                    BookReadItem(data: controller.books[index]),
+                itemBuilder: (_, index) => BookReadItem(
+                  data: controller.books[index],
+                  onDelete: () =>
+                      controller.delBook(controller.books[index].id),
+                ),
               ),
             )),
     );

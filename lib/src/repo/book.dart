@@ -30,4 +30,15 @@ class BookRepo {
       throw Exception(e);
     }
   }
+
+  static Future delHistoryBook(id) async {
+    try {
+      final http.Response res = await http
+          .delete(Uri.parse('$base_Url/tcv/public/api/v2/delete_history/$id'));
+      if (res.statusCode == 200) return json.decode(res.body);
+      throw Exception('Thất bại');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

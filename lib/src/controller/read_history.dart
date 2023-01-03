@@ -48,4 +48,17 @@ class ReadHistoryController extends GetxController {
       isMoreDataAvailable(false);
     }
   }
+
+  void delBook(id) async {
+    try {
+      print(id);
+      final body = await BookRepo.delHistoryBook(id);
+      if (body['success']) {
+        books.removeWhere((element) => element.id == id);
+        update();
+      }
+    } catch (e) {
+      Exception(e);
+    }
+  }
 }
