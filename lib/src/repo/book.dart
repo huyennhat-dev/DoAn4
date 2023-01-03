@@ -81,4 +81,30 @@ class BookRepo {
       throw Exception(e);
     }
   }
+
+  static Future postRating(data) async {
+    try {
+      final http.Response res = await http.post(
+          Uri.parse('$base_Url/tcv/public/api/v2/post_rating'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(data));
+      if (res.statusCode == 200) return json.decode(res.body);
+      throw Exception('Thất bại');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  static Future delRating(id) async {
+    try {
+      final http.Response res = await http
+          .delete(Uri.parse('$base_Url/tcv/public/api/v2/delete_rating/$id'));
+      if (res.statusCode == 200) return json.decode(res.body);
+      throw Exception('Thất bại');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

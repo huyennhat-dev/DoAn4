@@ -26,8 +26,10 @@ class VoteBookPage extends StatelessWidget {
         ),
         actions: [
           ButtonSquare(
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => WriteNomination())),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => WriteNomination(truyen_id: 1))),
               icon: Icon(CupertinoIcons.pencil_outline,
                   color: Colors.white, size: 26),
               bgColor: Colors.transparent),
@@ -46,28 +48,14 @@ class VoteBookPage extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           children: [
             NominationItem(
+                onHandel: () {},
                 image:
                     'https://i.pinimg.com/736x/b7/26/73/b72673d3ac44516defb82adea9edb909.jpg',
                 content:
                     'Ai chê thì chê chứ riêng nói bộ này siêu phẩm cũng ko đủ bối cảnh võ lâm trung nguyên cũng khác bọt thế giới tu chân và quan trọng là hệ thống này thật sự đặc biệt quá nhiều cách để khai thác hơn hết nhiều bộ cũng là tuổi thơ của biết bao nhiêu người tác chỉ biến tấu nhẹ vì đây là thế giới khác vừa lạ vừa quen tóm lại rất hay hi vọng convert cố gắng ^^',
                 username: 'Trần Ngọc Phong',
                 star: 4.0,
-                heart: 50),
-            NominationItem(
-                image:
-                    'https://i.pinimg.com/736x/b7/26/73/b72673d3ac44516defb82adea9edb909.jpg',
-                content:
-                    'Ai chê thì chê chứ riêng nói bộ này siêu phẩm cũng ko đủ bối cảnh võ lâm trung nguyên cũng khác bọt thế giới tu chân và quan trọng là hệ thống này thật sự đặc biệt quá nhiều cách để khai thác hơn hết nhiều bộ cũng là tuổi thơ của biết bao nhiêu người tác chỉ biến tấu nhẹ vì đây là thế giới khác vừa lạ vừa quen tóm lại rất hay hi vọng convert cố gắng ^^',
-                username: 'Trần Ngọc Phong',
-                star: 4.0,
-                heart: 50),
-            NominationItem(
-                image:
-                    'https://i.pinimg.com/736x/b7/26/73/b72673d3ac44516defb82adea9edb909.jpg',
-                content:
-                    'Ai chê thì chê chứ riêng nói bộ này siêu phẩm cũng ko đủ bối cảnh võ lâm trung nguyên cũng khác bọt thế giới tu chân và quan trọng là hệ thống này thật sự đặc biệt quá nhiều cách để khai thác hơn hết nhiều bộ cũng là tuổi thơ của biết bao nhiêu người tác chỉ biến tấu nhẹ vì đây là thế giới khác vừa lạ vừa quen tóm lại rất hay hi vọng convert cố gắng ^^',
-                username: 'Trần Ngọc Phong',
-                star: 4.0,
+                isMe: true,
                 heart: 50),
           ],
         ),

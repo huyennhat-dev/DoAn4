@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/src/controller/rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,13 +9,15 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../contains.dart';
 
 class NominationItem extends StatelessWidget {
-  const NominationItem(
+  NominationItem(
       {Key? key,
       required this.image,
       required this.content,
       required this.username,
       required this.star,
-      required this.heart})
+      required this.heart,
+      this.isMe = false,
+      required this.onHandel})
       : super(key: key);
 
   final String image;
@@ -20,10 +25,13 @@ class NominationItem extends StatelessWidget {
   final String username;
   final double star;
   final int heart;
+  final bool isMe;
+
+  final VoidCallback onHandel;
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -53,7 +61,7 @@ class NominationItem extends StatelessWidget {
     );
   }
 
-  Widget _buildItemRight(Size size) => Container(
+  Widget _buildItemRight(size) => Container(
         width: size.width - 105,
         padding: const EdgeInsets.all(kDefautPadding / 2),
         margin: const EdgeInsets.only(bottom: kDefautPadding / 2),
@@ -65,7 +73,7 @@ class NominationItem extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -91,23 +99,27 @@ class NominationItem extends StatelessWidget {
                           direction: Axis.horizontal),
                     ]),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: onHandel,
                   child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: kDefautPadding / 2,
-                          vertical: kDefautPadding / 4),
+                          horizontal: kDefautPadding / 4,
+                          vertical: kDefautPadding / 6),
                       decoration: BoxDecoration(
                           color: kButtonColor,
                           borderRadius: BorderRadius.circular(5)),
-                      child: Row(children: [
-                        Text(heart.toString(),
-                            style: GoogleFonts.mulish(
-                                color: textColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400)),
-                        const SizedBox(width: 5),
-                        Icon(Icons.favorite_border, color: textColor, size: 16)
-                      ])),
+                      child: isMe
+                          ? Icon(Icons.delete_outline_rounded,
+                              color: textColor, size: 18)
+                          : Row(children: [
+                              Text(heart.toString(),
+                                  style: GoogleFonts.mulish(
+                                      color: textColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400)),
+                              const SizedBox(width: 5),
+                              Icon(Icons.favorite_border,
+                                  color: textColor, size: 16)
+                            ])),
                 )
               ],
             ),

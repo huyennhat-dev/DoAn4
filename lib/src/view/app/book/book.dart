@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/controller/book.dart';
+import 'package:client/src/controller/home.dart';
 import 'package:client/src/view/app/widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,11 +28,17 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   final ScrollController _scrollController = ScrollController();
   BookController bookController = Get.put(BookController());
-
+  String uid = "";
   @override
   void initState() {
+    setUid();
     bookController.loadBook(widget.truyen_id);
     super.initState();
+  }
+
+  setUid() async {
+    final String x = await SharedPref().read("UID") ?? '-1';
+    setState(() => uid = x);
   }
 
   @override
@@ -110,17 +117,16 @@ class _BookPageState extends State<BookPage> {
                                   BookPageHeader(
                                       onPressed: () => Navigator.pop(context)),
                                   BookInfomation(
-                                    controller: bookController,
-                                    scrollController: _scrollController,
-                                  ),
+                                      controller: bookController,
+                                      scrollController: _scrollController),
                                   ListChapter(
-                                    truyenid: bookController.book!.id!.toInt(),
-                                    chapters:
-                                        bookController.book!.danhsachchuong!,
-                                  ),
+                                      truyenid:
+                                          bookController.book!.id!.toInt(),
+                                      chapters:
+                                          bookController.book!.danhsachchuong!),
                                   Nominations(
-                                    decus: bookController.book!.topdecu!,
-                                  )
+                                      uid: int.parse(uid),
+                                      bookController: bookController)
                                 ],
                               ),
                             ]),

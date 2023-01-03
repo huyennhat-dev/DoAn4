@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/src/view/app/book/book.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,7 +53,7 @@ class RecentReview extends StatelessWidget {
                         itemCount: data.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, index) =>
-                            _buildItem(data, index, size)),
+                            _buildItem(context, data, index, size)),
                   ),
                 )
         ],
@@ -60,8 +61,9 @@ class RecentReview extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(data, int index, Size size) => Container(
-        width: 300,
+  Widget _buildItem(BuildContext context, data, int index, Size size) =>
+      Container(
+        width: data.length == 1 ? size.width - kDefautPadding : 300,
         height: 200,
         margin: index == 0
             ? const EdgeInsets.only(left: 0)
@@ -92,9 +94,13 @@ class RecentReview extends StatelessWidget {
               ),
               const SizedBox(width: kDefautPadding / 3),
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 170,
+                    width: data.length == 1
+                        ? size.width - kDefautPadding - 118
+                        : 170,
                     child: Text(
                       '${data[index].username}',
                       style: GoogleFonts.mulish(
@@ -173,20 +179,27 @@ class RecentReview extends StatelessWidget {
                 ],
               ),
               const SizedBox(width: 5),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Container(
-                  width: 45,
-                  child: CachedNetworkImage(
-                    imageUrl: '$base_Url/tcv/public/uploads/truyen/' +
-                        data[index].hinhanh,
-                    placeholder: (BuildContext context, String url) =>
-                        Container(
-                      width: 45,
-                      height: 45 * 4 / 3,
-                      color: kQuaternaryColor,
+              GestureDetector(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            BookPage(truyen_id: data[index].truyenid))),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    width: 45,
+                    child: CachedNetworkImage(
+                      imageUrl: '$base_Url/tcv/public/uploads/truyen/' +
+                          data[index].hinhanh,
+                      placeholder: (BuildContext context, String url) =>
+                          Container(
+                        width: 45,
+                        height: 45 * 4 / 3,
+                        color: kQuaternaryColor,
+                      ),
+                      fit: BoxFit.cover,
                     ),
-                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -196,7 +209,7 @@ class RecentReview extends StatelessWidget {
           Row(
             children: [
               RatingBarIndicator(
-                  rating: 4.5,
+                  rating: data[index].sosao,
                   itemBuilder: (context, index) =>
                       const Icon(Icons.star, color: Colors.amber),
                   itemCount: 5,

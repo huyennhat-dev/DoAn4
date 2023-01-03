@@ -1,3 +1,4 @@
+import 'package:client/src/controller/book.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,11 +13,22 @@ import '../../widget/nomination_item.dart';
 
 final String base_Url = Service.base_Url;
 
-class Nominations extends StatelessWidget {
-  const Nominations({super.key, required this.decus});
+class Nominations extends StatefulWidget {
+  const Nominations(
+      {super.key, required this.uid, required this.bookController});
 
-  final List<Topdecu> decus;
+  final uid;
 
+  final BookController bookController;
+
+  @override
+  State<Nominations> createState() => _NominationsState();
+}
+
+class _NominationsState extends State<Nominations> {
+  void onDel(id) => widget.bookController.delRating(id);
+
+  void onHeart() {}
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,7 +57,8 @@ class Nominations extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => WriteNomination())),
+                          builder: (context) => WriteNomination(
+                              truyen_id: widget.bookController.book!.id!))),
                   child: _buildNominationButton(),
                 ),
                 Divider(color: kTertiaryColor),
@@ -56,7 +69,7 @@ class Nominations extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.w400))),
                 const SizedBox(height: 10),
-                decus.length < 1
+                widget.bookController.topdecus.length < 1
                     ? Container(
                         padding: const EdgeInsets.all(kDefautPadding / 2),
                         decoration: BoxDecoration(
@@ -71,15 +84,26 @@ class Nominations extends StatelessWidget {
                         ),
                       )
                     : Column(children: [
-                        for (int i = 0; i <= decus.length - 1; i++)
+                        for (int i = 0;
+                            i <= widget.bookController.topdecus.length - 1;
+                            i++)
                           NominationItem(
-                              image: '$base_Url/tcv/public/uploads/cus_avt/' +
-                                  decus[i].photo!,
-                              content: decus[i].content!,
-                              username: decus[i].username!,
-                              star: decus[i].sosao!,
-                              heart: 10),
-                        decus.length >= 3
+                            onHandel: widget.uid ==
+                                    widget.bookController.topdecus[i].uid
+                                ? () => onDel(
+                                    widget.bookController.topdecus[i].rateid)
+                                : () => onHeart,
+                            image: '$base_Url/tcv/public/uploads/cus_avt/' +
+                                widget.bookController.topdecus[i].photo!,
+                            content: widget.bookController.topdecus[i].content!,
+                            username:
+                                widget.bookController.topdecus[i].username!,
+                            star: widget.bookController.topdecus[i].sosao!,
+                            heart: 10,
+                            isMe: widget.uid ==
+                                widget.bookController.topdecus[i].uid,
+                          ),
+                        widget.bookController.topdecus.length >= 3
                             ? Center(
                                 child: GestureDetector(
                                   onTap: () => Navigator.push(

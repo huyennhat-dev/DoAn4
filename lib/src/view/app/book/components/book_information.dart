@@ -225,9 +225,12 @@ class _BookInfomationState extends State<BookInfomation> {
                   fontSize: 15),
           const SizedBox(width: 10),
           ButtonSquare(
-              onPressed:()=> widget.controller.bookMark(widget.controller.book!.id),
+              onPressed: () {
+                widget.controller.bookMark(widget.controller.book!.id);
+                setState(() => bookmark = !bookmark);
+              },
               bgColor: Colors.transparent,
-              icon: Icon(CupertinoIcons.bookmark_fill,
+              icon: Icon(CupertinoIcons.bookmark,
                   color: bookmark ? kSecondaryColor : Colors.white, size: 26)),
           ButtonSquare(
               onPressed: () {},

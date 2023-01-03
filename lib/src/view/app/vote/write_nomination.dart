@@ -1,22 +1,36 @@
+import 'package:client/src/controller/rating.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../contains.dart';
 import '../utils/button.dart';
 
 class WriteNomination extends StatefulWidget {
-  const WriteNomination({super.key});
+  WriteNomination({super.key, required this.truyen_id});
+  final int truyen_id;
 
   @override
   State<WriteNomination> createState() => _WriteNominationState();
 }
 
 class _WriteNominationState extends State<WriteNomination> {
-  final TextEditingController contentController = TextEditingController();
+  RatingController ratingController = Get.put(RatingController());
+  @override
+  void initState() {
+    super.initState();
+  }
 
-  var rate;
+  @override
+  void dispose() {
+    Get.delete<RatingController>();
+    ratingController.controller.clear();
+    super.dispose();
+  }
+
+  var rate = 1.0;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +116,7 @@ class _WriteNominationState extends State<WriteNomination> {
                         borderRadius: BorderRadius.circular(7)),
                     child: TextFormField(
                       maxLength: 250,
-                      controller: contentController,
+                      controller: ratingController.controller,
                       cursorColor: textColor,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
@@ -132,7 +146,10 @@ class _WriteNominationState extends State<WriteNomination> {
                       child: ButtonCus(
                           bgColor: kSecondaryColor,
                           fontSize: 18,
-                          onPressed: () {},
+                          onPressed: () => ratingController.postRating(
+                              rate,
+                              widget.truyen_id,
+                              ratingController.controller.text),
                           text: 'Đăng',
                           textColor: textColor),
                     ),

@@ -26,11 +26,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    Get.delete<HomeController>();
     homeController.setUsername();
     homeController.fetchBookRecommendation();
-    homeController.fetchBookRecommendation();
     homeController.fetchHomeData();
-
     super.initState();
   }
 
@@ -40,10 +39,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> pullRefresh() async {
-    Get.delete<HomeController>();
-    homeController.setUsername();
-    homeController.fetchHomeData();
-    homeController.fetchBookRecommendation();
+    Get.offAll(HomePage());
   }
 
   @override

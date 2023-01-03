@@ -23,13 +23,13 @@ class AppDrawer extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             _buildTopDrawer(context),
-            _buildBookStatus(),
-            _buildBookCategory(),
-            AppHeading(
-                title: 'Mới cập nhật',
-                onPressed: () {},
-                status: true,
-                icon: Icon(Icons.book, color: Colors.white, size: 22)),
+            // _buildBookStatus(),
+            // _buildBookCategory(),
+            // AppHeading(
+            //     title: 'Mới cập nhật',
+            //     onPressed: () {},
+            //     status: true,
+            //     icon: Icon(Icons.book, color: Colors.white, size: 22)),
             uid.isNotEmpty
                 ? AppHeading(
                     title: 'Sách đang theo dõi',
