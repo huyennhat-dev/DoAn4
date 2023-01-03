@@ -8,7 +8,6 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import '../../../controller/read_history.dart';
 import '../../contains.dart';
 import '../utils/button.dart';
-import 'book.dart';
 import 'components/book_read_item.dart';
 
 class BookRead extends StatefulWidget {

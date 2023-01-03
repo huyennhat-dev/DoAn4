@@ -27,8 +27,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     homeController.setUsername();
-    homeController.fetchBookRecommendation(
-        homeController.uId != "" ? homeController.uId : -1);
+    homeController.fetchBookRecommendation();
+    homeController.fetchBookRecommendation();
     homeController.fetchHomeData();
 
     super.initState();
@@ -43,8 +43,7 @@ class _HomePageState extends State<HomePage> {
     Get.delete<HomeController>();
     homeController.setUsername();
     homeController.fetchHomeData();
-    homeController.fetchBookRecommendation(
-        homeController.uId != "" ? homeController.uId : -1);
+    homeController.fetchBookRecommendation();
   }
 
   @override
@@ -65,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           width: size.width * 0.7,
           backgroundColor: kQuaternaryColor,
-          child: AppDrawer()),
+          child: Obx(() => AppDrawer(uid: '${homeController.uId}'))),
       drawerEnableOpenDragGesture: true,
       body: Container(
           alignment: Alignment.topCenter,

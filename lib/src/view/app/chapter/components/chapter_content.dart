@@ -20,13 +20,11 @@ class BookChapterContent extends StatefulWidget {
 
 class _BookChapterContentState extends State<BookChapterContent> {
   late Future<Chapter> futureChapter;
-  String? cusId;
 
   Future<Chapter> loadChapter() async {
     try {
-      String? uid = await SharedPref().read('UID');
       final body = await ChapterRepo.fetchChapter(
-          uid != null ? uid : -1, widget.truyenId, widget.slug);
+          await SharedPref().read('UID') ?? -1, widget.truyenId, widget.slug);
       return Chapter.fromJson(body);
     } catch (e) {
       throw Exception(e);

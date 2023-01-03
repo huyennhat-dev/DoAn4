@@ -30,8 +30,7 @@ class _BookPageState extends State<BookPage> {
 
   @override
   void initState() {
-    String? uid = SharedPref().read('UID').toString();
-    bookController.loadBook(68, widget.truyen_id);
+    bookController.loadBook(widget.truyen_id);
     super.initState();
   }
 
@@ -103,41 +102,15 @@ class _BookPageState extends State<BookPage> {
                                     alignment: Alignment.center,
                                     height: 160,
                                     width: size.width,
-                                    child: Icon(
-                                      Icons.error,
-                                      color: kErrorColor,
-                                    )),
+                                    child:
+                                        Icon(Icons.error, color: kErrorColor)),
                               ),
                               Column(
                                 children: [
                                   BookPageHeader(
                                       onPressed: () => Navigator.pop(context)),
                                   BookInfomation(
-                                    image:
-                                        '$base_Url/tcv/public/uploads/truyen/' +
-                                            bookController.book!.hinhanh
-                                                .toString(),
-                                    bookName: bookController.book!.tentruyen
-                                        .toString(),
-                                    authorName:
-                                        bookController.book!.tacgia.toString(),
-                                    bookStatus:
-                                        (bookController.book!.tinhtrang)!
-                                            .toInt(),
-                                    desc: bookController.book!.mota.toString(),
-                                    category: [
-                                      bookController.book!.theloai.toString(),
-                                      bookController.book!.tinhcach.toString(),
-                                      bookController.book!.thegioi.toString(),
-                                      bookController.book!.luuphai.toString(),
-                                    ],
-                                    rate: (bookController.book!.sosao)!
-                                        .toDouble(),
-                                    chuongslug: bookController.book!.chuongslug!
-                                        .toInt(),
-                                    chuongmoinhat: bookController
-                                        .book!.danhsachchuong!.length,
-                                    truyenid: bookController.book!.id!.toInt(),
+                                    controller: bookController,
                                     scrollController: _scrollController,
                                   ),
                                   ListChapter(

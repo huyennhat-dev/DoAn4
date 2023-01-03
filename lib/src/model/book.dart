@@ -11,6 +11,7 @@ class Book {
   int? luotxem;
   String? ngaydang;
   int? chuongslug;
+  bool? bookmark;
   String? thoigiancapnhat;
   double? sosao;
   int? sochuong;
@@ -33,6 +34,7 @@ class Book {
       this.luotxem,
       this.ngaydang,
       this.chuongslug,
+      this.bookmark,
       this.thoigiancapnhat,
       this.sosao,
       this.sochuong,
@@ -55,6 +57,7 @@ class Book {
     luotxem = json['luotxem'];
     ngaydang = json['ngaydang'];
     chuongslug = json['chuongslug'];
+    bookmark = json['bookmark'];
     thoigiancapnhat = json['thoigiancapnhat'];
     sosao = json['sosao'];
     sochuong = json['sochuong'];
@@ -89,6 +92,7 @@ class Book {
     data['luotxem'] = this.luotxem;
     data['ngaydang'] = this.ngaydang;
     data['chuongslug'] = this.chuongslug;
+    data['bookmark'] = this.bookmark;
     data['thoigiancapnhat'] = this.thoigiancapnhat;
     data['sosao'] = this.sosao;
     data['sochuong'] = this.sochuong;

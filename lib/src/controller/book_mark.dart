@@ -4,7 +4,7 @@ import 'package:client/src/repo/book.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ReadHistoryController extends GetxController {
+class BookMarkController extends GetxController {
   RxBool isloading = false.obs;
   RxBool isMoreDataAvailable = true.obs;
 
@@ -17,7 +17,7 @@ class ReadHistoryController extends GetxController {
     try {
       isMoreDataAvailable(false);
       isloading(true);
-      final body = await BookRepo.fetchHistoryBook(
+      final body = await BookRepo.fetchBookMark(
           await SharedPref().read("UID") ?? -1, page);
       books.addAll(body.map((data) => BookLibrary.fromJson(data)).toList());
     } catch (e) {
@@ -39,7 +39,7 @@ class ReadHistoryController extends GetxController {
 
   void getMoreTask(RxInt page) async {
     try {
-      BookRepo.fetchHistoryBook(await SharedPref().read("UID") ?? -1, page)
+      BookRepo.fetchBookMark(await SharedPref().read("UID") ?? -1, page)
           .then((resp) {
         isMoreDataAvailable(false);
         if (resp.length > 0) isMoreDataAvailable(true);
@@ -54,7 +54,7 @@ class ReadHistoryController extends GetxController {
 
   void delBook(id) async {
     try {
-      final body = await BookRepo.delHistoryBook(id);
+      final body = await BookRepo.delBookMark(id);
       if (body['success']) {
         books.removeWhere((element) => element.id == id);
         update();

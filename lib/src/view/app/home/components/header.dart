@@ -104,7 +104,7 @@ class AppHeader extends StatelessWidget {
               bgColor: kButtonColor,
               icon: Icon(CupertinoIcons.search, color: Colors.white, size: 26)),
           const SizedBox(width: 10),
-          uId != ""
+          uId.isNotEmpty
               ? GestureDetector(
                   onTap: () => showInfomation(context),
                   child: CachedNetworkImage(

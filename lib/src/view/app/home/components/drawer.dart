@@ -10,7 +10,8 @@ import '../../utils/button.dart';
 import '../../utils/heading.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  const AppDrawer({super.key, required this.uid});
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +30,24 @@ class AppDrawer extends StatelessWidget {
                 onPressed: () {},
                 status: true,
                 icon: Icon(Icons.book, color: Colors.white, size: 22)),
-            AppHeading(
-                title: 'Sách đang theo dõi',
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BookCase())),
-                status: true,
-                icon: Icon(CupertinoIcons.bookmark_fill,
-                    color: Colors.white, size: 20)),
-            AppHeading(
-                title: 'Sách đã đọc',
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BookRead())),
-                status: true,
-                icon: Icon(CupertinoIcons.book_fill,
-                    color: Colors.white, size: 20))
+            uid.isNotEmpty
+                ? AppHeading(
+                    title: 'Sách đang theo dõi',
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BookCase())),
+                    status: true,
+                    icon: Icon(CupertinoIcons.bookmark_fill,
+                        color: Colors.white, size: 20))
+                : SizedBox(),
+            uid.isNotEmpty
+                ? AppHeading(
+                    title: 'Sách đã đọc',
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BookRead())),
+                    status: true,
+                    icon: Icon(CupertinoIcons.book_fill,
+                        color: Colors.white, size: 20))
+                : SizedBox()
           ],
         ),
       ),

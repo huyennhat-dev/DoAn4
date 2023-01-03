@@ -23,10 +23,10 @@ class HomeController extends GetxController {
   List<dynamic> bookRecommendations = List<dynamic>.empty(growable: true).obs;
 
   setUsername() async {
-    uId.value = (await SharedPref().read('UID'))!;
-    uName.value = (await SharedPref().read('USERNAME'))!;
-    uEmail.value = (await SharedPref().read('UEMAIL'))!;
-    uPhoto.value = (await SharedPref().read('UPHOTO'))!;
+    uId.value = await SharedPref().read('UID') ?? "";
+    uName.value = await SharedPref().read('USERNAME') ?? "";
+    uEmail.value = await SharedPref().read('UEMAIL') ?? "";
+    uPhoto.value = await SharedPref().read('UPHOTO') ?? "";
     update();
   }
 
@@ -55,9 +55,10 @@ class HomeController extends GetxController {
     }
   }
 
-  fetchBookRecommendation(id) async {
+  fetchBookRecommendation() async {
     try {
-      final body = await HomeRepo.fetchBookRecommendation(id);
+      final body =
+          await HomeRepo.fetchBookRecommendation(uId.isNotEmpty ? uId : -1);
       bookRecommendations =
           body.map((data) => BookRecommendation.fromJson(data)).toList();
     } catch (e) {

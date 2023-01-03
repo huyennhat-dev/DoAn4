@@ -1,3 +1,4 @@
+import 'package:client/src/controller/book.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -12,29 +13,9 @@ import '../../utils/button.dart';
 
 class BookInfomation extends StatefulWidget {
   const BookInfomation(
-      {super.key,
-      required this.image,
-      required this.bookName,
-      required this.authorName,
-      required this.bookStatus,
-      required this.category,
-      required this.scrollController,
-      required this.desc,
-      required this.rate,
-      required this.truyenid,
-      required this.chuongmoinhat,
-      required this.chuongslug});
+      {super.key, required this.controller, required this.scrollController});
 
-  final String image;
-  final String bookName;
-  final String authorName;
-  final int bookStatus;
-  final String desc;
-  final double rate;
-  final int truyenid;
-  final int chuongslug;
-  final int chuongmoinhat;
-  final List<String> category;
+  final BookController controller;
 
   final ScrollController scrollController;
 
@@ -46,17 +27,20 @@ class _BookInfomationState extends State<BookInfomation> {
   late String firstHalf;
   late String secondHalf;
 
+  bool bookmark = false;
+
   bool flag = true;
 
   @override
   void initState() {
     super.initState();
-
-    if (widget.desc.length > 250) {
-      firstHalf = widget.desc.substring(0, 250);
-      secondHalf = widget.desc.substring(250, widget.desc.length);
+    bookmark = widget.controller.book!.bookmark!;
+    if (widget.controller.book!.mota!.length > 250) {
+      firstHalf = widget.controller.book!.mota!.substring(0, 250);
+      secondHalf = widget.controller.book!.mota!
+          .substring(250, widget.controller.book!.mota!.length);
     } else {
-      firstHalf = widget.desc;
+      firstHalf = widget.controller.book!.mota!;
       secondHalf = "";
     }
   }
@@ -72,6 +56,11 @@ class _BookInfomationState extends State<BookInfomation> {
       duration: Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -93,12 +82,10 @@ class _BookInfomationState extends State<BookInfomation> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: CachedNetworkImage(
-                imageUrl: widget.image,
+                imageUrl:
+                    '$base_Url/tcv/public/uploads/truyen/${widget.controller.book!.hinhanh}',
                 placeholder: (BuildContext context, String url) => Container(
-                  width: 180,
-                  height: 180 * 4 / 3,
-                  color: kQuaternaryColor,
-                ),
+                    width: 180, height: 180 * 4 / 3, color: kQuaternaryColor),
                 fit: BoxFit.fitHeight,
               ),
             ),
@@ -106,7 +93,7 @@ class _BookInfomationState extends State<BookInfomation> {
           const SizedBox(height: 10),
           SizedBox(
             width: size.width - kDefautPadding,
-            child: Text(widget.bookName,
+            child: Text(widget.controller.book!.tentruyen!,
                 maxLines: 2,
                 style: GoogleFonts.mulish(
                     color: textColor,
@@ -120,7 +107,7 @@ class _BookInfomationState extends State<BookInfomation> {
             width: size.width - kDefautPadding,
             child: Text(
                 maxLines: 1,
-                'Tác giả: ${widget.authorName}',
+                'Tác giả: ${widget.controller.book!.tacgia}',
                 style: GoogleFonts.mulish(
                     color: textColor,
                     fontSize: 14,
@@ -129,11 +116,11 @@ class _BookInfomationState extends State<BookInfomation> {
                 textAlign: TextAlign.center),
           ),
           const SizedBox(height: 5),
-          if (widget.bookStatus == 0)
+          if (widget.controller.book!.tinhtrang == 0)
             _buildBookStatus(size, Colors.green, 'Đang tiến hành'),
-          if (widget.bookStatus == 1)
+          if (widget.controller.book!.tinhtrang == 1)
             _buildBookStatus(size, Colors.yellow, 'Đã hoàn thành'),
-          if (widget.bookStatus == 2)
+          if (widget.controller.book!.tinhtrang == 2)
             _buildBookStatus(size, Colors.red, 'Tạm ngưng'),
           const SizedBox(height: 5),
           _buildRatingGroup(),
@@ -174,7 +161,9 @@ class _BookInfomationState extends State<BookInfomation> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RatingBarIndicator(
-              rating: widget.rate < 0.5 ? 0.0 : widget.rate,
+              rating: widget.controller.book!.sosao! < 0.5
+                  ? 0.0
+                  : widget.controller.book!.sosao!,
               itemBuilder: (context, index) =>
                   const Icon(Icons.star, color: Colors.amber),
               itemCount: 5,
@@ -182,7 +171,7 @@ class _BookInfomationState extends State<BookInfomation> {
               direction: Axis.horizontal),
           const SizedBox(width: 5),
           Text(
-            '( ${widget.rate < 0.5 ? 0.0 : widget.rate.toStringAsFixed(1)} / 5 )',
+            '( ${widget.controller.book!.sosao! < 0.5 ? 0.0 : widget.controller.book!.sosao!.toStringAsFixed(1)} / 5 )',
             style: GoogleFonts.mulish(
                 color: kSecondaryColor,
                 fontSize: 16,
@@ -195,14 +184,15 @@ class _BookInfomationState extends State<BookInfomation> {
   Widget _buildButtonGroup() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          widget.chuongslug > 0
+          widget.controller.book!.chuongslug! > 0
               ? ButtonCus(
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BookChapter(
-                              truyen_id: widget.truyenid,
-                              slugChuong: widget.chuongslug))),
+                              truyen_id: widget.controller.book!.id!,
+                              slugChuong:
+                                  widget.controller.book!.chuongslug!))),
                   text: 'Đọc tiếp',
                   bgColor: kSecondaryColor,
                   textColor: textColor,
@@ -212,31 +202,33 @@ class _BookInfomationState extends State<BookInfomation> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => BookChapter(
-                              truyen_id: widget.truyenid,
-                              slugChuong: widget.chuongmoinhat))),
+                              truyen_id: widget.controller.book!.id!,
+                              slugChuong: widget
+                                  .controller.book!.danhsachchuong!.length))),
                   text: 'Đọc ngay',
                   bgColor: kSecondaryColor,
                   textColor: textColor,
                   fontSize: 15),
-          SizedBox(width: widget.chuongslug > 0 ? 0 : 10),
-          widget.chuongslug > 0
+          SizedBox(width: widget.controller.book!.chuongslug! > 0 ? 0 : 10),
+          widget.controller.book!.chuongslug! > 0
               ? SizedBox()
               : ButtonCus(
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BookChapter(
-                              truyen_id: widget.truyenid, slugChuong: 1))),
+                              truyen_id: widget.controller.book!.id!,
+                              slugChuong: 1))),
                   text: 'Đọc từ đầu',
                   bgColor: Colors.white,
                   textColor: Colors.black,
                   fontSize: 15),
           const SizedBox(width: 10),
           ButtonSquare(
-              onPressed: () {},
+              onPressed:()=> widget.controller.bookMark(widget.controller.book!.id),
               bgColor: Colors.transparent,
-              icon:
-                  Icon(CupertinoIcons.bookmark, color: Colors.white, size: 26)),
+              icon: Icon(CupertinoIcons.bookmark_fill,
+                  color: bookmark ? kSecondaryColor : Colors.white, size: 26)),
           ButtonSquare(
               onPressed: () {},
               bgColor: Colors.transparent,
@@ -256,11 +248,22 @@ class _BookInfomationState extends State<BookInfomation> {
         runSpacing: 10,
         alignment: WrapAlignment.center,
         children: [
-          for (int i = 0; i <= widget.category.length - 1; i++)
-            CategoryItem(
-              onPressed: () {},
-              title: widget.category[i],
-            )
+          CategoryItem(
+            onPressed: () {},
+            title: widget.controller.book!.theloai!,
+          ),
+          CategoryItem(
+            onPressed: () {},
+            title: widget.controller.book!.tinhcach!,
+          ),
+          CategoryItem(
+            onPressed: () {},
+            title: widget.controller.book!.thegioi!,
+          ),
+          CategoryItem(
+            onPressed: () {},
+            title: widget.controller.book!.luuphai!,
+          )
         ],
       );
 
