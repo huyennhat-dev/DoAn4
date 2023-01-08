@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../services/service.dart';
@@ -51,10 +52,7 @@ class NewBookUpdate extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, List data, int index) =>
       GestureDetector(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => BookPage(truyen_id: data[index].id))),
+        onTap: () => Get.toNamed('/book?id=${data[index].id}'),
         child: Column(
           children: [
             Stack(

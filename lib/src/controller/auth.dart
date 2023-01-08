@@ -1,7 +1,6 @@
 import 'package:client/src/model/user.dart';
 import 'package:client/src/repo/auth.dart';
 import 'package:client/src/services/service.dart';
-import 'package:client/src/view/app/home/home.dart';
 import 'package:client/src/view/contains.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,11 +44,8 @@ class AuthController extends GetxController {
         await SharedPref().save('USERNAME', u.username.toString());
         await SharedPref().save('UPHOTO', u.avatar.toString());
 
-        Get.offAll(
-          const HomePage(),
-          transition: Transition.cupertino,
-          duration: const Duration(milliseconds: 300),
-        );
+        Get.offAllNamed('/');
+
         Get.snackbar(appName + " thông báo",
             "Đăng nhập thành công, xin chào ${u.username}",
             titleText:

@@ -1,6 +1,5 @@
 import 'package:client/src/helpers/shared_pref.dart';
 import 'package:client/src/model/decu.dart';
-import 'package:client/src/view/app/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +30,7 @@ class BookController extends GetxController {
     }
   }
 
-  bookMark(id) async {
+  Future<bool> bookMark(id) async {
     try {
       final uid = await SharedPref().read("UID") ?? "";
       if (uid.isNotEmpty) {
@@ -57,6 +56,7 @@ class BookController extends GetxController {
                   horizontal: kDefautPadding / 1,
                   vertical: kDefautPadding / 1.5));
         });
+        return true;
       } else {
         Get.snackbar(appName + " thông báo",
             "Bạn phải đăng nhập để sử dụng chức năng này!",
@@ -71,11 +71,8 @@ class BookController extends GetxController {
             padding: const EdgeInsets.symmetric(
                 horizontal: kDefautPadding / 1,
                 vertical: kDefautPadding / 1.5));
-        Get.off(
-          const LoginScreen(),
-          transition: Transition.cupertino,
-          duration: const Duration(milliseconds: 300),
-        );
+        Get.toNamed('/login');
+        return false;
       }
     } catch (e) {
       throw Exception(e);

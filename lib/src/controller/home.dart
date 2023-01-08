@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 import '../helpers/shared_pref.dart';
 import '../model/recent_review.dart';
-import '../view/app/home/home.dart';
 
 class HomeController extends GetxController {
   RxBool isLoading = false.obs;
@@ -57,13 +56,15 @@ class HomeController extends GetxController {
 
   fetchBookRecommendation() async {
     try {
-      final body =
-          await HomeRepo.fetchBookRecommendation(uId.isNotEmpty ? uId : -1);
-      bookRecommendations =
-          body.map((data) => BookRecommendation.fromJson(data)).toList();
+      await HomeRepo.fetchBookRecommendation(
+              await SharedPref().read('UID') ?? -1)
+          .then((value) {
+        bookRecommendations.addAll(
+            value.map((data) => BookRecommendation.fromJson(data)).toList());
+      });
     } catch (e) {
       throw Exception(e);
-    } finally {}
+    }
   }
 
   signOut() async {
@@ -75,11 +76,7 @@ class HomeController extends GetxController {
       await SharedPref().remove('USERNAME ');
       await SharedPref().remove('UPHOTO');
 
-      Get.offAll(
-        const HomePage(),
-        transition: Transition.cupertino,
-        duration: const Duration(milliseconds: 300),
-      );
+      Get.offAllNamed('/');
     } catch (e) {
       throw Exception(e);
     } finally {

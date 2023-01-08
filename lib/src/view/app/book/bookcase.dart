@@ -7,7 +7,6 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 import '../../contains.dart';
 import '../utils/button.dart';
-import '../widget/book_item.dart';
 import '../widget/loading.dart';
 import 'components/book_read_item.dart';
 
@@ -22,6 +21,8 @@ class _BookCaseState extends State<BookCase> {
   BookMarkController controller = Get.put(BookMarkController());
   @override
   void initState() {
+    Get.delete<BookMarkController>();
+
     controller.getTask();
     controller.paginateTask();
     super.initState();

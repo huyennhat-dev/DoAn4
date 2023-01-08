@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../services/service.dart';
@@ -33,8 +34,7 @@ class AppDrawer extends StatelessWidget {
             uid.isNotEmpty
                 ? AppHeading(
                     title: 'Sách đang theo dõi',
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BookCase())),
+                    onPressed: () => Get.toNamed('/case-book'),
                     status: true,
                     icon: Icon(CupertinoIcons.bookmark_fill,
                         color: Colors.white, size: 20))
@@ -42,8 +42,7 @@ class AppDrawer extends StatelessWidget {
             uid.isNotEmpty
                 ? AppHeading(
                     title: 'Sách đã đọc',
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BookRead())),
+                    onPressed: () => Get.toNamed('/read-book'),
                     status: true,
                     icon: Icon(CupertinoIcons.book_fill,
                         color: Colors.white, size: 20))

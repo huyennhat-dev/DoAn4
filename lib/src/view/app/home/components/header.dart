@@ -3,6 +3,7 @@ import 'package:client/src/view/app/login.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -99,8 +100,7 @@ class AppHeader extends StatelessWidget {
   Widget _buildHeaderRight(BuildContext context) => Row(
         children: [
           ButtonSquare(
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchBookPage())),
+              onPressed: () => Get.toNamed('/search'),
               bgColor: kButtonColor,
               icon: Icon(CupertinoIcons.search, color: Colors.white, size: 26)),
           const SizedBox(width: 10),
@@ -128,10 +128,7 @@ class AppHeader extends StatelessWidget {
                           Icon(Icons.error, color: kErrorColor)),
                 )
               : GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginScreen())),
+                  onTap: () => Get.toNamed('/login'),
                   child: Container(
                       height: 40,
                       width: 40,

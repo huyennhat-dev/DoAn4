@@ -1,35 +1,35 @@
-class BookLibrary {
+class BookForYou {
   int? id;
   String? tentruyen;
   String? hinhanh;
   String? tacgia;
-  String? theloai;
-  int? truyenId;
+  int? chuongmoinhat;
   double? sosao;
-  int? chuongSlug;
-  int? tongsochuong;
+  String? theloai;
+  String? mota;
+  int? luotxem;
 
-  BookLibrary(
+  BookForYou(
       {this.id,
       this.tentruyen,
       this.hinhanh,
       this.tacgia,
-      this.theloai,
-      this.truyenId,
+      this.chuongmoinhat,
       this.sosao,
-      this.chuongSlug,
-      this.tongsochuong});
+      this.theloai,
+      this.mota,
+      this.luotxem});
 
-  BookLibrary.fromJson(Map<String, dynamic> json) {
+  BookForYou.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     tentruyen = json['tentruyen'];
     hinhanh = json['hinhanh'];
     tacgia = json['tacgia'];
-    theloai = json['theloai'];
-    truyenId = json['truyen_id'];
+    chuongmoinhat = json['chuongmoinhat'];
     sosao = json['sosao'];
-    chuongSlug = json['chuong_slug'];
-    tongsochuong = json['tongsochuong'];
+    theloai = json['theloai'];
+    mota = json['mota'];
+    luotxem = json['luotxem'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,11 +38,11 @@ class BookLibrary {
     data['tentruyen'] = this.tentruyen;
     data['hinhanh'] = this.hinhanh;
     data['tacgia'] = this.tacgia;
-    data['theloai'] = this.theloai;
-    data['truyen_id'] = this.truyenId;
+    data['chuongmoinhat'] = this.chuongmoinhat;
     data['sosao'] = this.sosao;
-    data['chuong_slug'] = this.chuongSlug;
-    data['tongsochuong'] = this.tongsochuong;
+    data['theloai'] = this.theloai;
+    data['mota'] = this.mota;
+    data['luotxem'] = this.luotxem;
     return data;
   }
 }

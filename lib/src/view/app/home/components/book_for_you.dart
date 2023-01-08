@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../services/service.dart';
 import '../../../contains.dart';
-import '../../book/book.dart';
 
 final String base_Url = Service.base_Url;
 
@@ -69,21 +69,21 @@ class BookForYou extends StatelessWidget {
         ),
       );
 
-  Widget _buildListBook(List data, Size size) => Container(
-      width: size.width - kDefautPadding,
-      height: 100 * 15,
-      child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: data.length,
-        itemBuilder: (context, index) => _buildItem(context, data, index, size),
-      ));
+  Widget _buildListBook(List data, Size size) {
+    return Container(
+        width: size.width - kDefautPadding,
+        height: 100 * double.parse(data.length.toString()),
+        child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: data.length,
+          itemBuilder: (context, index) =>
+              _buildItem(context, data, index, size),
+        ));
+  }
 
   Widget _buildItem(BuildContext context, List data, int i, Size size) =>
       GestureDetector(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => BookPage(truyen_id: data[i].id))),
+        onTap: () => Get.toNamed('/book?id=${data[i].id}'),
         child: Container(
           height: 100,
           width: size.width - kDefautPadding,

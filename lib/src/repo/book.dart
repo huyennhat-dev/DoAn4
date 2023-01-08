@@ -107,4 +107,26 @@ class BookRepo {
       throw Exception(e);
     }
   }
+
+  static Future loadSearchBook(key) async {
+    try {
+      final http.Response res = await http.get(
+          Uri.parse('$base_Url/tcv/public/api/v2/search_book?tukhoa=$key'));
+      if (res.statusCode == 200) return json.decode(res.body);
+      throw Exception('Thất bại');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  static Future loadBookForYou(truyenid) async {
+    try {
+      final http.Response res = await http
+          .get(Uri.parse('$base_Url/tcv/public/api/v2/book_for_you/$truyenid'));
+      if (res.statusCode == 200) return json.decode(res.body);
+      throw Exception('Thất bại');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

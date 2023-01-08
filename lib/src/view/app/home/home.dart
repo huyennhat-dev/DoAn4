@@ -27,20 +27,20 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     Get.delete<HomeController>();
+
     homeController.setUsername();
-    homeController.fetchBookRecommendation();
     homeController.fetchHomeData();
+    homeController.fetchBookRecommendation();
+
     super.initState();
   }
 
   void onSignOutClick(BuildContext context) async {
     Navigator.pop(context);
-    await homeController.signOut();
+    homeController.signOut();
   }
 
-  Future<void> pullRefresh() async {
-    Get.offAll(HomePage());
-  }
+  Future<void> pullRefresh() async => Get.offAllNamed('/');
 
   @override
   void dispose() {

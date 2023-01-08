@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../contains.dart';
@@ -128,22 +129,17 @@ class _AppBannerState extends State<AppBanner> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ButtonCus(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BookChapter(
-                              truyen_id: data.id,
-                              slugChuong: data.chuongmoinhat))),
+                  onPressed: () => Get.toNamed('/book/chapter', arguments: {
+                        'truyen_id': data.id,
+                        'slug': data.chuongmoinhat
+                      }),
                   text: 'Đọc ngay',
                   bgColor: kSecondaryColor,
                   textColor: Colors.white,
                   fontSize: 14),
               const SizedBox(width: 15),
               ButtonCus(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BookPage(truyen_id: data.id))),
+                  onPressed: () => Get.toNamed('/book?id=${data.id}'),
                   text: 'Chi tiết',
                   bgColor: Colors.white,
                   textColor: Colors.black,

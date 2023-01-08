@@ -17,9 +17,9 @@ import 'components/list_chapter.dart';
 import 'components/nominations.dart';
 
 class BookPage extends StatefulWidget {
-  const BookPage({super.key, required this.truyen_id});
-
-  final int truyen_id;
+  const BookPage({
+    super.key,
+  });
 
   @override
   State<BookPage> createState() => _BookPageState();
@@ -31,8 +31,10 @@ class _BookPageState extends State<BookPage> {
   String uid = "";
   @override
   void initState() {
+    Get.delete<BookController>();
+
     setUid();
-    bookController.loadBook(widget.truyen_id);
+    bookController.loadBook(Get.parameters['id']);
     super.initState();
   }
 

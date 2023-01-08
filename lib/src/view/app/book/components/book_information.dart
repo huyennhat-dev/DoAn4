@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -186,25 +187,19 @@ class _BookInfomationState extends State<BookInfomation> {
         children: [
           widget.controller.book!.chuongslug! > 0
               ? ButtonCus(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BookChapter(
-                              truyen_id: widget.controller.book!.id!,
-                              slugChuong:
-                                  widget.controller.book!.chuongslug!))),
+                  onPressed: () => Get.toNamed('/book/chapter', arguments: {
+                        'truyen_id': widget.controller.book!.id,
+                        'slug': widget.controller.book!.chuongslug
+                      }),
                   text: 'Đọc tiếp',
                   bgColor: kSecondaryColor,
                   textColor: textColor,
                   fontSize: 15)
               : ButtonCus(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BookChapter(
-                              truyen_id: widget.controller.book!.id!,
-                              slugChuong: widget
-                                  .controller.book!.danhsachchuong!.length))),
+                  onPressed: () => Get.toNamed('/book/chapter', arguments: {
+                        'truyen_id': widget.controller.book!.id,
+                        'slug': widget.controller.book!.danhsachchuong!.length
+                      }),
                   text: 'Đọc ngay',
                   bgColor: kSecondaryColor,
                   textColor: textColor,
@@ -213,21 +208,20 @@ class _BookInfomationState extends State<BookInfomation> {
           widget.controller.book!.chuongslug! > 0
               ? SizedBox()
               : ButtonCus(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BookChapter(
-                              truyen_id: widget.controller.book!.id!,
-                              slugChuong: 1))),
+                  onPressed: () => Get.toNamed('/book/chapter', arguments: {
+                        'truyen_id': widget.controller.book!.id,
+                        'slug': 1
+                      }),
                   text: 'Đọc từ đầu',
                   bgColor: Colors.white,
                   textColor: Colors.black,
                   fontSize: 15),
           const SizedBox(width: 10),
           ButtonSquare(
-              onPressed: () {
-                widget.controller.bookMark(widget.controller.book!.id);
-                setState(() => bookmark = !bookmark);
+              onPressed: () async {
+                await widget.controller.bookMark(widget.controller.book!.id)
+                    ? setState(() => bookmark = !bookmark)
+                    : null;
               },
               bgColor: Colors.transparent,
               icon: Icon(CupertinoIcons.bookmark,

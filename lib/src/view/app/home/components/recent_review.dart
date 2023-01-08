@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/view/app/book/book.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -180,11 +181,7 @@ class RecentReview extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            BookPage(truyen_id: data[index].truyenid))),
+                onTap: () => Get.toNamed('/book?id=${data[index].truyenid}'),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: Container(

@@ -21,6 +21,8 @@ class _BookReadState extends State<BookRead> {
   ReadHistoryController controller = Get.put(ReadHistoryController());
   @override
   void initState() {
+    Get.delete<ReadHistoryController>();
+
     controller.getTask();
     controller.paginateTask();
     super.initState();

@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/model/lib_book.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../services/service.dart';
 import '../../../contains.dart';
-import '../book.dart';
 
 final String base_Url = Service.base_Url;
 
@@ -19,13 +19,8 @@ class BookReadItem extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  BookPage(truyen_id: data.truyenId!.toInt()))),
+      onTap: () => Get.toNamed('/book?id=${data.truyenId}'),
       child: Container(
-        height: ((390 - 40) / 5) * 4 / 3 + 20,
         padding: const EdgeInsets.symmetric(
             horizontal: kDefautPadding / 2, vertical: kDefautPadding / 2),
         margin: const EdgeInsets.only(
@@ -65,8 +60,7 @@ class BookReadItem extends StatelessWidget {
       );
 
   Widget _buildItemRight(BuildContext context, Size size) => Container(
-        width: (size.width - 40) - 80,
-        height: 70 * 4 / 3,
+        width: (size.width - kDefautPadding * 2) - 80,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,5 +140,3 @@ class BookReadItem extends StatelessWidget {
         ),
       );
 }
-
-class CupertinoPageRoute {}

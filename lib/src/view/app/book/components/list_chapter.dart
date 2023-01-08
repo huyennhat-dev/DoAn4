@@ -2,10 +2,10 @@ import 'package:client/src/view/app/utils/heading.dart';
 import 'package:client/src/view/contains.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../model/list_chapter.dart';
-import '../../chapter/chapter.dart';
 
 class ListChapter extends StatefulWidget {
   const ListChapter(
@@ -104,13 +104,10 @@ class _ListChapterState extends State<ListChapter> {
 
   Widget _buildChapterItem(BuildContext context, int index, Size size) =>
       GestureDetector(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => BookChapter(
-                    truyen_id: widget.truyenid,
-                    slugChuong:
-                        int.parse(widget.chapters[index].slug.toString())))),
+        onTap: () => Get.toNamed('/book/chapter', arguments: {
+          'truyen_id': widget.truyenid,
+          'slug': int.parse(widget.chapters[index].slug!)
+        }),
         child: Container(
           height: 35,
           margin: const EdgeInsets.only(bottom: kDefautPadding / 4),
