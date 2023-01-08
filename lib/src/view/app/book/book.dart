@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/controller/book.dart';
-import 'package:client/src/controller/home.dart';
 import 'package:client/src/view/app/widget/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
