@@ -93,15 +93,17 @@ class _BookForYouPageState extends State<BookForYouPage> {
                                         'Bạn vừa đọc hết chương mới nhất của truyện '),
                                 TextSpan(
                                     text: '${controller.bookname.value} ',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold)),
+                                    style: GoogleFonts.mulish(
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.w700)),
                                 TextSpan(
                                     text:
                                         'không biết nên đọc tiếp truyện gì khác? Đừng lo lắng, chúng tôi xin giới thiệu đến bạn một số bộ truyện mà các "đồng đạo" khác đang đọc '),
                                 TextSpan(
                                     text: '${controller.bookname.value} ',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold)),
+                                    style: GoogleFonts.mulish(
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.w700)),
                                 TextSpan(
                                     text:
                                         'cũng đang tu luyện. Dữ liệu các truyện này được phân tích từ lịch sử đọc truyện trên toàn hệ thống, đảm bảo bạn sẽ tìm được bộ truyện ưng ý tiếp theo để đọc từ những truyện bên dưới. Nếu bạn chưa đăng nhập thì hãy đăng nhập ngay nhé, dữ liệu sẽ chính xác hơn khi có có lịch sử đọc truyện của bạn.')

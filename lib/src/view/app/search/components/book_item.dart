@@ -20,7 +20,6 @@ class BookItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => Get.toNamed('/book?id=${data.id}'),
       child: Container(
-        height: 70 * 4 / 3 + 20,
         padding: const EdgeInsets.symmetric(
             horizontal: kDefautPadding / 2, vertical: kDefautPadding / 2),
         margin: const EdgeInsets.only(
@@ -45,7 +44,6 @@ class BookItem extends StatelessWidget {
 
   Widget _buildItemImage(Size size) => SizedBox(
         width: 70,
-        height: (70) * 4 / 3,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(7),
           child: CachedNetworkImage(

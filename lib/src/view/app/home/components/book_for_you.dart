@@ -24,7 +24,7 @@ class BookForYou extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildHeading('Có thể bạn sẽ muốn đọc', size, false),
-          _buildListBook(data, size),
+          _buildListBook(context, data, size),
           // _buildHeading('Xem thêm', size, true),
         ],
       ),
@@ -69,15 +69,14 @@ class BookForYou extends StatelessWidget {
         ),
       );
 
-  Widget _buildListBook(List data, Size size) {
+  Widget _buildListBook(BuildContext context, List data, Size size) {
     return Container(
         width: size.width - kDefautPadding,
-        height: 100 * double.parse(data.length.toString()),
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: data.length,
-          itemBuilder: (context, index) =>
-              _buildItem(context, data, index, size),
+        child: Column(
+          children: [
+            for (int i = 0; i <= data.length - 1; i++)
+              _buildItem(context, data, i, size)
+          ],
         ));
   }
 
@@ -85,7 +84,6 @@ class BookForYou extends StatelessWidget {
       GestureDetector(
         onTap: () => Get.toNamed('/book?id=${data[i].id}'),
         child: Container(
-          height: 100,
           width: size.width - kDefautPadding,
           color: i % 2 == 0 ? kQuaternaryColor : kTertiaryColor,
           padding: EdgeInsets.all(kDefautPadding / 3),
@@ -96,6 +94,7 @@ class BookForYou extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(7),
                 child: CachedNetworkImage(
+                  height: 100 - (kDefautPadding / 3) * 2,
                   imageUrl:
                       '$base_Url/tcv/public/uploads/truyen/' + data[i].hinhanh,
                   placeholder: (BuildContext context, String url) => ClipRRect(
@@ -116,36 +115,30 @@ class BookForYou extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: size.width - (kDefautPadding + 90),
-                    child: Text(
-                      '${data[i].tentruyen}',
-                      style: GoogleFonts.mulish(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
+                    child: Text('${data[i].tentruyen}',
+                        style: GoogleFonts.mulish(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1),
                   ),
                   const SizedBox(height: 3),
-                  Text(
-                    'Chương ${data[i].chuongmoinhat}',
-                    style: GoogleFonts.mulish(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
+                  Text('Chương ${data[i].chuongmoinhat}',
+                      style: GoogleFonts.mulish(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1),
                   const SizedBox(height: 3),
                   Text(
                     'Tác giả: ${data[i].tacgia}',
                     style: GoogleFonts.mulish(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 13,
                       fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w300,
                     ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -157,8 +150,8 @@ class BookForYou extends StatelessWidget {
                       '${data[i].theloai} - ${data[i].thegioi} - ${data[i].tinhcach} - ${data[i].luuphai}m',
                       style: GoogleFonts.mulish(
                         color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w300,
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,

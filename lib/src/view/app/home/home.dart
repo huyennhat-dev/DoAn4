@@ -70,35 +70,32 @@ class _HomePageState extends State<HomePage> {
             color: kErrorColor,
             child: ScrollConfiguration(
               behavior: MyBehavior(),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                physics: BouncingScrollPhysics(),
-                child: Obx(() => homeController.isLoading.value
-                    ? Container(
-                        height: size.height,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefautPadding * 1),
-                        child: LoadingWidget(message: "Loading..."),
-                      )
-                    : Column(
-                        children: [
-                          AppHeader(
-                            uId: '${homeController.uId}',
-                            uName: '${homeController.uName}',
-                            uEmail: '${homeController.uEmail}',
-                            uPhoto: '${homeController.uPhoto}',
-                            signOut: () => onSignOutClick(context),
-                          ),
-                          AppBanner(data: homeController.banners),
-                          BookForYou(data: homeController.bookRecommendations),
-                          NewBookUpdate(data: homeController.newbookupdates),
-                          TopVote(data: homeController.selectBooks),
-                          RecentReview(data: homeController.recentReviews),
-                          NewBook(data: homeController.newBooks)
-                        ],
-                      )),
-              ),
+              child: Obx(() => homeController.isLoading.value
+                  ? Container(
+                      height: size.height,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefautPadding * 1),
+                      child: LoadingWidget(message: "Loading..."),
+                    )
+                  : ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        AppHeader(
+                          uId: '${homeController.uId}',
+                          uName: '${homeController.uName}',
+                          uEmail: '${homeController.uEmail}',
+                          uPhoto: '${homeController.uPhoto}',
+                          signOut: () => onSignOutClick(context),
+                        ),
+                        AppBanner(data: homeController.banners),
+                        BookForYou(data: homeController.bookRecommendations),
+                        NewBookUpdate(data: homeController.newbookupdates),
+                        TopVote(data: homeController.selectBooks),
+                        RecentReview(data: homeController.recentReviews),
+                        NewBook(data: homeController.newBooks)
+                      ],
+                    )),
             ),
           )),
     );

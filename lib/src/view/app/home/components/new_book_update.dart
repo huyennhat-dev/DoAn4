@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../services/service.dart';
 import '../../../contains.dart';
-import '../../book/book.dart';
 import '../../utils/heading.dart';
 
 final String base_Url = Service.base_Url;
@@ -75,11 +74,22 @@ class NewBookUpdate extends StatelessWidget {
                           fit: BoxFit.cover),
                     ),
                   ),
-                  placeholder: (context, url) => Center(
-                      child: CircularProgressIndicator(
-                          strokeWidth: 1.5, color: kSecondaryColor)),
-                  errorWidget: (context, url, error) =>
-                      Center(child: Icon(Icons.error, color: kErrorColor)),
+                  placeholder: (BuildContext context, String url) => ClipRRect(
+                    borderRadius: BorderRadius.circular(7),
+                    child: Container(
+                      width: 120,
+                      height: 160,
+                      color: kQuaternaryColor,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => ClipRRect(
+                    borderRadius: BorderRadius.circular(7),
+                    child: Container(
+                      width: 120,
+                      height: 160,
+                      color: kQuaternaryColor,
+                    ),
+                  ),
                 ),
                 Positioned(
                   top: 5,
